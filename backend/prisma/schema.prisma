@@ -1,0 +1,74 @@
+// This is your Prisma schema file
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  passwordHash String
+  firstName    String
+  lastName     String
+  avatar       String?
+  mfaEnabled   Boolean   @default(false)
+  mfaSecret    String?
+  role         String    @default("USER") // USER | PREMIUM | ADMIN
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  lastLoginAt  DateTime?
+  deletedAt    DateTime?
+
+  poses         Pose[]
+  sessions      Session[]
+  refreshTokens RefreshToken[]
+}
+
+model Pose {
+  id              String    @id @default(uuid())
+  userId          String
+  imageUrl        String
+  score           Int       // 0-100
+  confidence      Float     // 0-1
+  poseType        String    @default("standing")
+  keypoints       String    @default("[]") // JSON string
+  recommendations String    @default("[]") // JSON string
+  metadata        String    @default("{}") // JSON string
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
+
+  user    User    @relation(fields: [userId], references: [id])
+  session Session? @relation(fields: [sessionId], references: [id])
+  sessionId String?
+}
+
+model Session {
+  id            String    @id @default(uuid())
+  userId        String
+  startTime     DateTime  @default(now())
+  endTime       DateTime?
+  posesCaptured Int       @default(0)
+  averageScore  Float     @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+
+  user  User   @relation(fields: [userId], references: [id])
+  poses Pose[]
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

@@ -1,0 +1,57 @@
+# ── Dependencies ──────────────────────────────────────────────────
+node_modules/
+.pnp
+.pnp.js
+
+# ── Environment / Secrets ─────────────────────────────────────────
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+backend/.env
+frontend/.env.local
+
+# ── Database ──────────────────────────────────────────────────────
+backend/prisma/dev.db
+backend/prisma/dev.db-journal
+*.db
+*.db-journal
+
+# ── Next.js ───────────────────────────────────────────────────────
+frontend/.next/
+frontend/out/
+frontend/build/
+
+# ── Build / Dist ─────────────────────────────────────────────────
+dist/
+build/
+.turbo/
+
+# ── OS & Editor ──────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ── Logs ─────────────────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# ── Testing / Coverage ────────────────────────────────────────────
+coverage/
+.nyc_output/
+
+# ── Misc ─────────────────────────────────────────────────────────
+.cache/
+*.tsbuildinfo
+next-env.d.ts
