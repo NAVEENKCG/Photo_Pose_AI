@@ -28,12 +28,16 @@
 /* ── Base Reset ───────────────────────────────────────────────── */
 *, *::before, *::after {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Prevent font size inflation on orientation change */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -41,7 +45,10 @@ body {
   color: var(--text-primary);
   font-family: 'DM Sans', sans-serif;
   min-height: 100vh;
+  min-height: 100dvh;
   overflow-x: hidden;
+  /* Momentum scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ── Typography ───────────────────────────────────────────────── */
@@ -51,31 +58,49 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ── Glassmorphism Card ───────────────────────────────────────── */
 .glass-card {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10);
+  /* Solid fallback for browsers without backdrop-filter (most Android) */
+  background: #0f1e36;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 16px;
   position: relative;
   overflow: hidden;
   transition: background 0.2s ease, border-color 0.2s ease;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.10),
+    0 4px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* Progressive enhancement: glassy blur only when supported */
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
 }
 
 .glass-card:hover {
-  background: var(--glass-hover);
-  border-color: var(--glass-hover-border);
+  background: #152035;
+  border-color: rgba(255, 255, 255, 0.20);
 }
 
-/* Mouse-tracking glow on interactive cards */
-.glass-card.interactive::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(200px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(59, 130, 246, 0.06), transparent 70%);
-  pointer-events: none;
-  border-radius: inherit;
-  z-index: 0;
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .glass-card:hover {
+    background: var(--glass-hover);
+  }
+}
+
+/* Mouse-tracking glow on interactive cards (desktop only) */
+@media (hover: hover) {
+  .glass-card.interactive::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(200px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(59, 130, 246, 0.06), transparent 70%);
+    pointer-events: none;
+    border-radius: inherit;
+    z-index: 0;
+  }
 }
 
 .glass-card > * {
@@ -93,18 +118,23 @@ h1, h2, h3, h4, h5, h6 {
   background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
   color: white;
   font-family: 'DM Sans', sans-serif;
-  font-weight: 500;
-  font-size: 0.9375rem;
+  font-weight: 600;
+  font-size: 1rem;
   border-radius: 12px;
   border: none;
   cursor: pointer;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
   transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
   box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.3), 0 4px 16px rgba(59, 130, 246, 0.25);
 }
 
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.5), 0 8px 24px rgba(59, 130, 246, 0.35);
+@media (hover: hover) {
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.5), 0 8px 24px rgba(59, 130, 246, 0.35);
+  }
 }
 
 .btn-primary:active {
@@ -149,24 +179,29 @@ h1, h2, h3, h4, h5, h6 {
 .input-field {
   width: 100%;
   padding: 0.875rem 1rem;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  /* Solid visible background — works on all mobile browsers */
+  background: #162033;
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 12px;
-  color: var(--text-primary);
+  color: #F1F5F9;
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.9375rem;
+  font-size: 1rem; /* 16px prevents iOS auto-zoom on focus */
   outline: none;
   transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  /* Prevent iOS styling override */
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .input-field::placeholder {
-  color: rgba(241, 245, 249, 0.35);
+  color: rgba(241, 245, 249, 0.45);
 }
 
 .input-field:focus {
-  border-color: rgba(59, 130, 246, 0.6);
-  background: rgba(255, 255, 255, 0.06);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+  border-color: rgba(59, 130, 246, 0.8);
+  background: #1a2840;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
+  color: #F1F5F9;
 }
 
 .input-field:focus-visible {
@@ -175,8 +210,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .input-error {
-  border-color: rgba(239, 68, 68, 0.6) !important;
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.10) !important;
+  border-color: rgba(239, 68, 68, 0.7) !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.14) !important;
 }
 
 /* ── Score Progress Bar ───────────────────────────────────────── */
@@ -338,3 +373,56 @@ a:focus-visible {
   color: #FCA5A5;
   border: 1px solid rgba(239, 68, 68, 0.25);
 }
+
+/* ── Camera / Viewfinder UI ───────────────────────────────────── */
+
+/* Full-bleed camera page — no scroll, no padding */
+body:has(.camera-root) {
+  overflow: hidden;
+}
+
+/* Safe-area padding helpers */
+.pt-safe-top   { padding-top: env(safe-area-inset-top, 0px); }
+.pb-safe-bottom{ padding-bottom: env(safe-area-inset-bottom, 0px); }
+
+/* Coaching tip card hover lift */
+.tip-card {
+  transition: transform 0.2s cubic-bezier(0.16,1,0.3,1), box-shadow 0.2s ease;
+}
+.tip-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+
+/* Glowing skeleton pulse—driven by JS via canvas, but kept here for reference */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 0.7; }
+  50%       { opacity: 1;   }
+}
+
+/* Shutter outer ring glow */
+@keyframes ring-glow {
+  0%, 100% { filter: drop-shadow(0 0 6px currentColor); }
+  50%       { filter: drop-shadow(0 0 14px currentColor); }
+}
+
+/* Capture flash keyframe */
+@keyframes capture-flash {
+  0%   { opacity: 0; }
+  15%  { opacity: 1; }
+  60%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Score ring smooth transition */
+circle.score-ring-fill {
+  transition: stroke-dasharray 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              stroke 0.5s ease;
+}
+
+/* Corner frame lines—pure CSS animation fallback */
+@keyframes corner-breathe {
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 1;   }
+}
+

@@ -43,23 +43,18 @@ function LoginContent() {
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center px-4 py-16">
-      <motion.div
-        variants={staggerContainer}
-        initial="initial"
-        animate="animate"
-        className="w-full max-w-md"
-      >
+    <main className="min-h-screen flex items-center justify-center px-4 py-8 md:py-16">
+      <div className="w-full max-w-md">
         {/* Back */}
-        <motion.div variants={fadeInUp} transition={EASE_OUT_EXPO} className="mb-8">
+        <div className="mb-8">
           <Link href="/" className="inline-flex items-center gap-2 text-muted hover:text-white transition-colors text-sm" aria-label="Back to home">
             <ArrowLeft size={14} />
             Back to home
           </Link>
-        </motion.div>
+        </div>
 
         {/* Card */}
-        <motion.div variants={fadeInUp} transition={EASE_OUT_EXPO} className="glass-card p-8">
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="glass-card p-6 md:p-8">
           {/* Logo */}
           <div className="flex items-center gap-3 mb-8">
             <div className="w-10 h-10 rounded-xl bg-blue-500 flex items-center justify-center">
@@ -177,7 +172,7 @@ function LoginContent() {
             </Link>
           </p>
         </motion.div>
-      </motion.div>
+      </div>
     </main>
   );
 }

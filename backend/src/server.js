@@ -32,6 +32,9 @@ app.use(cors({
   origin: [
     process.env.FRONTEND_URL || 'http://localhost:3000',
     'http://localhost:3000',
+    'http://192.168.1.9:3000',
+    'https://afraid-books-knock.loca.lt', // localtunnel frontend
+    'https://two-pets-sin.loca.lt',        // localtunnel backend (self)
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],

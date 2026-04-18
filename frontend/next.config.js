@@ -1,6 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+
+  // Allow LAN devices (phone preview) to connect to the dev server
+  allowedDevOrigins: ['192.168.1.9'],
+
   async headers() {
     return [
       {
