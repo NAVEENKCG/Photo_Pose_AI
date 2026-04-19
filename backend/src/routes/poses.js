@@ -5,9 +5,81 @@ const { v4: uuidv4 } = require('uuid');
 const { authenticate } = require('../middleware/auth');
 const { poseAnalysisLimiter } = require('../middleware/rateLimiter');
 const { getPrisma } = require('../utils/prismaClient');
+const Anthropic = require('@anthropic-ai/sdk');
+
+const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || 'dummy' });
 
 // All pose routes require authentication
 router.use(authenticate);
+
+// ── POST /api/poses/generate (Dynamic Claude Poses) ─────────────────────────
+router.post('/generate', poseAnalysisLimiter, async (req, res, next) => {
+  const { primaryScene, labels, lighting, isIndoor } = req.body;
+
+  try {
+    const response = await client.messages.create({
+      model: 'claude-3-5-sonnet-20241022',
+      max_tokens: 3000,
+      messages: [{
+        role: 'user',
+        content: `You are a professional portrait and fashion photographer with 20 years of experience.
+
+SCENE ANALYSIS:
+- Environment: ${primaryScene || 'general'}
+- Detected objects: ${labels?.slice(0, 8).join(', ') || 'general'}
+- Lighting: ${lighting || 'natural'}
+- Setting: ${isIndoor ? 'Indoor' : 'Outdoor'}
+
+Generate exactly 5 photography poses that are:
+1. PERFECTLY SUITED for this exact scene
+2. Varied in style, achievable by non-professionals
+3. Defined using gesture-drawing brush strokes as normalized coordinates (0-1).
+
+Each pose needs these SEPARATE stroke paths:
+- head_neck: oval head + neck 
+- left_arm: shoulder to elbow to wrist
+- right_arm: shoulder to elbow to wrist
+- torso: shoulder line → hip line
+- left_leg: hip to knee to ankle
+- right_leg: hip to knee to ankle
+
+Respond ONLY with valid JSON, no other text:
+{
+  "poses": [
+    {
+      "id": "unique_id",
+      "name": "Pose Name",
+      "instruction": "Short instruction (max 8 words)",
+      "vibe": "Mood",
+      "strokes": [
+        {
+          "id": "head_neck",
+          "baseWidth": 4,
+          "pts": [
+            {"x": 0.50, "y": 0.05},
+            {"x": 0.48, "y": 0.10, "cp1x": 0.46, "cp1y": 0.08}
+          ]
+        },
+        ... (repeat for other strokes) ...
+      ],
+      "miniIconPath": "M... SVG path for 60x80 icon"
+    }
+  ]
+}`
+      }]
+    });
+
+    const rawText = response.content[0].text.trim();
+    // Strip markdown fences if present
+    const jsonStr = rawText.replace(/^```json?\s*/, '').replace(/\s*```$/, '');
+    const data = JSON.parse(jsonStr);
+
+    res.json({ poses: data.poses, scene: primaryScene, generatedAt: new Date().toISOString() });
+  } catch (err) {
+    console.error('Claude Pose Generation error:', err.message);
+    res.status(500).json({ error: 'AI Brain exhausted. Using fallbacks.' });
+  }
+});
 
 // ── POST /api/poses/analyze ───────────────────────────────────────
 router.post('/analyze', poseAnalysisLimiter, async (req, res, next) => {
