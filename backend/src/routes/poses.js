@@ -14,70 +14,65 @@ router.use(authenticate);
 
 // ── POST /api/poses/generate (Dynamic Claude Poses) ─────────────────────────
 router.post('/generate', poseAnalysisLimiter, async (req, res, next) => {
-  const { primaryScene, labels, lighting, isIndoor } = req.body;
+  const { sceneLabels, bodyAnalysis, lightingCondition } = req.body;
+
+  if (!sceneLabels || !Array.isArray(sceneLabels)) {
+    return res.status(400).json({ error: 'Invalid input' });
+  }
 
   try {
     const response = await client.messages.create({
       model: 'claude-3-5-sonnet-20241022',
-      max_tokens: 3000,
+      max_tokens: 1000,
       messages: [{
         role: 'user',
-        content: `You are a professional portrait and fashion photographer with 20 years of experience.
+        content: `You are a professional photographer and pose director.
 
-SCENE ANALYSIS:
-- Environment: ${primaryScene || 'general'}
-- Detected objects: ${labels?.slice(0, 8).join(', ') || 'general'}
-- Lighting: ${lighting || 'natural'}
-- Setting: ${isIndoor ? 'Indoor' : 'Outdoor'}
+Scene detected: ${sceneLabels.join(', ')}
+Lighting: ${lightingCondition || 'neutral'}
+Person's current posture:
+  - Spine angle: ${bodyAnalysis?.spineAngle || 0}°
+  - Shoulder tilt: ${bodyAnalysis?.shoulderTilt || 0}°
+  - Current pose type: ${bodyAnalysis?.currentPoseType || 'standing_neutral'}
+  - Body height ratio: ${bodyAnalysis?.bodyHeight || 0.5}
 
-Generate exactly 5 photography poses that are:
-1. PERFECTLY SUITED for this exact scene
-2. Varied in style, achievable by non-professionals
-3. Defined using gesture-drawing brush strokes as normalized coordinates (0-1).
+Generate exactly 5 unique, scene-appropriate photography poses.
+Each pose must be:
+1. Physically achievable for this person's body position
+2. Visually interesting for the detected scene/environment
+3. Described with specific body adjustments needed
 
-Each pose needs these SEPARATE stroke paths:
-- head_neck: oval head + neck 
-- left_arm: shoulder to elbow to wrist
-- right_arm: shoulder to elbow to wrist
-- torso: shoulder line → hip line
-- left_leg: hip to knee to ankle
-- right_leg: hip to knee to ankle
-
-Respond ONLY with valid JSON, no other text:
-{
-  "poses": [
-    {
-      "id": "unique_id",
-      "name": "Pose Name",
-      "instruction": "Short instruction (max 8 words)",
-      "vibe": "Mood",
-      "strokes": [
-        {
-          "id": "head_neck",
-          "baseWidth": 4,
-          "pts": [
-            {"x": 0.50, "y": 0.05},
-            {"x": 0.48, "y": 0.10, "cp1x": 0.46, "cp1y": 0.08}
-          ]
-        },
-        ... (repeat for other strokes) ...
-      ],
-      "miniIconPath": "M... SVG path for 60x80 icon"
-    }
-  ]
-}`
+Respond ONLY with a JSON array, no other text:
+[
+  {
+    "id": "unique_snake_case_id",
+    "name": "Short Pose Name",
+    "description": "One sentence what to do",
+    "vibe": "2-3 word vibe label",
+    "instructions": ["step 1", "step 2", "step 3"],
+    "keyAdjustments": {
+      "fromCurrentPose": "what to change from their current position"
+    },
+    "suitabilityReason": "why this works for the scene"
+  }
+]`
       }]
     });
 
     const rawText = response.content[0].text.trim();
-    // Strip markdown fences if present
-    const jsonStr = rawText.replace(/^```json?\s*/, '').replace(/\s*```$/, '');
-    const data = JSON.parse(jsonStr);
+    const poses = JSON.parse(rawText);
 
-    res.json({ poses: data.poses, scene: primaryScene, generatedAt: new Date().toISOString() });
+    if (!Array.isArray(poses) || poses.length === 0) {
+      throw new Error('Invalid pose response');
+    }
+
+    res.json({ poses, scene: sceneLabels[0], generatedAt: new Date().toISOString() });
   } catch (err) {
-    console.error('Claude Pose Generation error:', err.message);
-    res.status(500).json({ error: 'AI Brain exhausted. Using fallbacks.' });
+    console.warn('Pose generation error:', err.message);
+    // Fallback to static poses format expected by frontend
+    res.json({ fallback: true, poses: [
+      { id: 'standing_natural', name: 'Natural Stand', vibe: 'Relaxed', instructions: ['Stand naturally'] }
+    ]});
   }
 });
 
