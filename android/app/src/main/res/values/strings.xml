@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PoseGuide AI</string>
+    <string name="permission_camera_rationale">PoseGuide AI needs camera access to analyze your pose in real time and provide coaching.</string>
+    <string name="label_next_pose">Next Pose</string>
+    <string name="label_ready_to_shoot">Ready to Shoot</string>
+    <string name="label_coach_enabled">Pose Coach: On</string>
+    <string name="label_coach_disabled">Pose Coach: Off</string>
+    <string name="label_scene_beach">Beach</string>
+    <string name="label_scene_street">Street</string>
+    <string name="label_scene_cafe">Café</string>
+    <string name="label_scene_indoor">Indoor</string>
+    <string name="label_scene_park">Park</string>
+    <string name="label_scene_urban">Urban</string>
+    <string name="label_scene_generic">Generic</string>
+</resources>

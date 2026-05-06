@@ -1,0 +1,486 @@
+{
+  "version": "1.0.0",
+  "poses": [
+    {
+      "id": "pose_001",
+      "name": "Relaxed Shoulder Drop",
+      "compatibleScenes": ["BEACH", "PARK", "GENERIC"],
+      "bodyParts": ["LEFT_SHOULDER", "RIGHT_SHOULDER", "LEFT_HIP", "RIGHT_HIP"],
+      "overlayHints": [
+        "Drop both shoulders away from ears",
+        "Shift weight slightly to left foot",
+        "Let arms hang loosely at sides"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_SHOULDER", "targetAngleDeg": 160, "toleranceDeg": 15, "description": "Shoulder relaxed down"},
+        {"landmarkType": "RIGHT_SHOULDER", "targetAngleDeg": 160, "toleranceDeg": 15, "description": "Shoulder relaxed down"},
+        {"landmarkType": "LEFT_HIP", "targetAngleDeg": null, "toleranceDeg": 20, "description": "Weight on left hip"}
+      ],
+      "visualCategory": "STANDING_CASUAL"
+    },
+    {
+      "id": "pose_002",
+      "name": "Power Stance Arms Crossed",
+      "compatibleScenes": ["URBAN", "STREET", "INDOOR"],
+      "bodyParts": ["LEFT_ELBOW", "RIGHT_ELBOW", "LEFT_WRIST", "RIGHT_WRIST", "LEFT_SHOULDER", "RIGHT_SHOULDER"],
+      "overlayHints": [
+        "Cross arms across chest firmly",
+        "Feet shoulder-width apart",
+        "Chin slightly lifted"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_ELBOW", "targetAngleDeg": 90, "toleranceDeg": 20, "description": "Elbow bent 90°"},
+        {"landmarkType": "RIGHT_ELBOW", "targetAngleDeg": 90, "toleranceDeg": 20, "description": "Elbow bent 90°"}
+      ],
+      "visualCategory": "STANDING_DYNAMIC"
+    },
+    {
+      "id": "pose_003",
+      "name": "Coastal Wind Hair",
+      "compatibleScenes": ["BEACH"],
+      "bodyParts": ["LEFT_WRIST", "RIGHT_WRIST", "NOSE", "LEFT_SHOULDER", "RIGHT_SHOULDER"],
+      "overlayHints": [
+        "Raise one hand to tousle hair",
+        "Turn face 30° toward horizon",
+        "Slight body lean into wind"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "RIGHT_WRIST", "targetAngleDeg": 145, "toleranceDeg": 25, "description": "Hand near head"},
+        {"landmarkType": "NOSE", "targetAngleDeg": null, "toleranceDeg": 20, "description": "Face turned 30° left"}
+      ],
+      "visualCategory": "ARMS_EXPRESSIVE"
+    },
+    {
+      "id": "pose_004",
+      "name": "Café Contemplation",
+      "compatibleScenes": ["CAFE", "INDOOR"],
+      "bodyParts": ["LEFT_ELBOW", "NOSE", "LEFT_SHOULDER"],
+      "overlayHints": [
+        "Rest chin on one hand",
+        "Elbow on imaginary surface",
+        "Gaze slightly off-camera"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_ELBOW", "targetAngleDeg": 85, "toleranceDeg": 20, "description": "Elbow resting position"},
+        {"landmarkType": "LEFT_WRIST", "targetAngleDeg": 170, "toleranceDeg": 20, "description": "Wrist near chin"}
+      ],
+      "visualCategory": "SITTING"
+    },
+    {
+      "id": "pose_005",
+      "name": "Urban Wall Lean",
+      "compatibleScenes": ["URBAN", "STREET", "INDOOR"],
+      "bodyParts": ["LEFT_SHOULDER", "LEFT_HIP", "LEFT_KNEE"],
+      "overlayHints": [
+        "Lean back shoulder against wall",
+        "Cross one ankle over the other",
+        "Arms loose at sides or one in pocket"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_SHOULDER", "targetAngleDeg": null, "toleranceDeg": 25, "description": "Shoulder back"},
+        {"landmarkType": "LEFT_KNEE", "targetAngleDeg": 170, "toleranceDeg": 20, "description": "Legs slightly bent"}
+      ],
+      "visualCategory": "LEANING"
+    },
+    {
+      "id": "pose_006",
+      "name": "Park Stroll Pause",
+      "compatibleScenes": ["PARK", "BEACH", "GENERIC"],
+      "bodyParts": ["LEFT_KNEE", "RIGHT_KNEE", "LEFT_ANKLE", "RIGHT_ANKLE"],
+      "overlayHints": [
+        "Mid-step pause — one foot forward",
+        "Arms naturally swinging",
+        "Look ahead with soft smile"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_KNEE", "targetAngleDeg": 155, "toleranceDeg": 20, "description": "Front knee slightly bent"},
+        {"landmarkType": "RIGHT_KNEE", "targetAngleDeg": 175, "toleranceDeg": 15, "description": "Back leg nearly straight"}
+      ],
+      "visualCategory": "WALKING_PAUSE"
+    },
+    {
+      "id": "pose_007",
+      "name": "Profile Architectural Frame",
+      "compatibleScenes": ["URBAN", "LANDMARK", "STREET"],
+      "bodyParts": ["NOSE", "LEFT_SHOULDER", "RIGHT_SHOULDER", "LEFT_HIP"],
+      "overlayHints": [
+        "Turn body fully to one side",
+        "Face in strict profile to camera",
+        "Arms relaxed against body"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "NOSE", "targetAngleDeg": null, "toleranceDeg": 15, "description": "Face 90° profile"},
+        {"landmarkType": "LEFT_SHOULDER", "targetAngleDeg": null, "toleranceDeg": 15, "description": "Shoulder facing forward"}
+      ],
+      "visualCategory": "PROFILE"
+    },
+    {
+      "id": "pose_008",
+      "name": "Arms Wide Open",
+      "compatibleScenes": ["BEACH", "PARK", "GENERIC"],
+      "bodyParts": ["LEFT_WRIST", "RIGHT_WRIST", "LEFT_ELBOW", "RIGHT_ELBOW", "LEFT_SHOULDER", "RIGHT_SHOULDER"],
+      "overlayHints": [
+        "Spread arms wide at shoulder height",
+        "Palms facing forward",
+        "Head tilted slightly back"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_ELBOW", "targetAngleDeg": 175, "toleranceDeg": 15, "description": "Arm straight out"},
+        {"landmarkType": "RIGHT_ELBOW", "targetAngleDeg": 175, "toleranceDeg": 15, "description": "Arm straight out"}
+      ],
+      "visualCategory": "ARMS_EXPRESSIVE"
+    },
+    {
+      "id": "pose_009",
+      "name": "Hand In Pocket Lean",
+      "compatibleScenes": ["CAFE", "INDOOR", "STREET", "URBAN"],
+      "bodyParts": ["LEFT_WRIST", "LEFT_ELBOW", "LEFT_HIP", "RIGHT_SHOULDER"],
+      "overlayHints": [
+        "Tuck one hand into pocket",
+        "Opposite shoulder drops slightly",
+        "Chin tilted 15° down"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_WRIST", "targetAngleDeg": null, "toleranceDeg": 20, "description": "Wrist at hip level"},
+        {"landmarkType": "RIGHT_SHOULDER", "targetAngleDeg": 155, "toleranceDeg": 20, "description": "Shoulder drop"}
+      ],
+      "visualCategory": "STANDING_CASUAL"
+    },
+    {
+      "id": "pose_010",
+      "name": "Dynamic Step Forward",
+      "compatibleScenes": ["STREET", "URBAN", "PARK"],
+      "bodyParts": ["LEFT_KNEE", "RIGHT_KNEE", "LEFT_ANKLE", "RIGHT_ANKLE", "LEFT_ARM", "RIGHT_ARM"],
+      "overlayHints": [
+        "Step boldly toward camera",
+        "Opposite arm swings forward",
+        "Eyes locked on lens"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_KNEE", "targetAngleDeg": 140, "toleranceDeg": 20, "description": "Lead knee bent"},
+        {"landmarkType": "RIGHT_ANKLE", "targetAngleDeg": null, "toleranceDeg": 25, "description": "Back foot on toes"}
+      ],
+      "visualCategory": "WALKING_PAUSE"
+    },
+    {
+      "id": "pose_011",
+      "name": "Over Shoulder Glance",
+      "compatibleScenes": ["STREET", "URBAN", "BEACH", "PARK"],
+      "bodyParts": ["NOSE", "LEFT_SHOULDER", "RIGHT_SHOULDER", "LEFT_HIP", "RIGHT_HIP"],
+      "overlayHints": [
+        "Walk or stand with back to camera",
+        "Turn head over right shoulder",
+        "Hold eye contact with lens"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "NOSE", "targetAngleDeg": null, "toleranceDeg": 20, "description": "Head turned back"},
+        {"landmarkType": "LEFT_SHOULDER", "targetAngleDeg": null, "toleranceDeg": 15, "description": "Shoulders angled away"}
+      ],
+      "visualCategory": "PROFILE"
+    },
+    {
+      "id": "pose_012",
+      "name": "Seated Elbow Rest",
+      "compatibleScenes": ["CAFE", "INDOOR"],
+      "bodyParts": ["LEFT_ELBOW", "RIGHT_ELBOW", "LEFT_HIP", "RIGHT_HIP", "LEFT_KNEE", "RIGHT_KNEE"],
+      "overlayHints": [
+        "Sit forward on the edge of seat",
+        "Both elbows on knees",
+        "Hands clasped loosely"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_ELBOW", "targetAngleDeg": 100, "toleranceDeg": 20, "description": "Elbow on knee"},
+        {"landmarkType": "LEFT_KNEE", "targetAngleDeg": 90, "toleranceDeg": 15, "description": "Knee at right angle"}
+      ],
+      "visualCategory": "SITTING"
+    },
+    {
+      "id": "pose_013",
+      "name": "One Arm Raised Victory",
+      "compatibleScenes": ["BEACH", "PARK", "GENERIC"],
+      "bodyParts": ["RIGHT_WRIST", "RIGHT_ELBOW", "RIGHT_SHOULDER", "LEFT_SHOULDER"],
+      "overlayHints": [
+        "Raise right arm straight up",
+        "Left arm relaxed at side",
+        "Big smile — celebrate!"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "RIGHT_ELBOW", "targetAngleDeg": 175, "toleranceDeg": 15, "description": "Arm straight above"},
+        {"landmarkType": "RIGHT_SHOULDER", "targetAngleDeg": 170, "toleranceDeg": 15, "description": "Shoulder raised overhead"}
+      ],
+      "visualCategory": "ARMS_EXPRESSIVE"
+    },
+    {
+      "id": "pose_014",
+      "name": "Contrapposto Stand",
+      "compatibleScenes": ["INDOOR", "CAFE", "URBAN", "GENERIC"],
+      "bodyParts": ["LEFT_HIP", "RIGHT_HIP", "LEFT_SHOULDER", "RIGHT_SHOULDER", "LEFT_KNEE"],
+      "overlayHints": [
+        "Pop hip to one side",
+        "Opposite shoulder rises slightly",
+        "Weight on dominant leg"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_HIP", "targetAngleDeg": null, "toleranceDeg": 20, "description": "Hip shifted left"},
+        {"landmarkType": "LEFT_KNEE", "targetAngleDeg": 175, "toleranceDeg": 15, "description": "Weight-bearing knee straight"}
+      ],
+      "visualCategory": "STANDING_CASUAL"
+    },
+    {
+      "id": "pose_015",
+      "name": "Golden Hour Silhouette",
+      "compatibleScenes": ["BEACH", "PARK", "GENERIC"],
+      "bodyParts": ["LEFT_SHOULDER", "RIGHT_SHOULDER", "LEFT_WRIST", "RIGHT_WRIST", "NOSE"],
+      "overlayHints": [
+        "Stand sideways to the light source",
+        "One arm extended toward sky",
+        "Face turned toward sun"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_WRIST", "targetAngleDeg": 150, "toleranceDeg": 20, "description": "Arm extended upward"},
+        {"landmarkType": "NOSE", "targetAngleDeg": null, "toleranceDeg": 20, "description": "Face angled toward light"}
+      ],
+      "visualCategory": "STANDING_DYNAMIC"
+    },
+    {
+      "id": "pose_016",
+      "name": "Street Fashion Pivot",
+      "compatibleScenes": ["STREET", "URBAN"],
+      "bodyParts": ["LEFT_ANKLE", "RIGHT_ANKLE", "LEFT_HIP", "RIGHT_HIP", "LEFT_SHOULDER"],
+      "overlayHints": [
+        "Pivot on heel 45° from camera",
+        "Look back over left shoulder",
+        "Jacket or bag angled outward"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_ANKLE", "targetAngleDeg": null, "toleranceDeg": 25, "description": "Foot pivoted 45°"},
+        {"landmarkType": "LEFT_HIP", "targetAngleDeg": null, "toleranceDeg": 20, "description": "Body at angle"}
+      ],
+      "visualCategory": "WALKING_PAUSE"
+    },
+    {
+      "id": "pose_017",
+      "name": "Forehead Frame",
+      "compatibleScenes": ["CAFE", "INDOOR", "GENERIC"],
+      "bodyParts": ["LEFT_WRIST", "RIGHT_WRIST", "LEFT_ELBOW", "RIGHT_ELBOW", "NOSE"],
+      "overlayHints": [
+        "Frame face with both hands",
+        "Fingers spread naturally",
+        "Elbows wide, relaxed"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_WRIST", "targetAngleDeg": null, "toleranceDeg": 20, "description": "Hand near face"},
+        {"landmarkType": "RIGHT_WRIST", "targetAngleDeg": null, "toleranceDeg": 20, "description": "Hand near face"}
+      ],
+      "visualCategory": "ARMS_EXPRESSIVE"
+    },
+    {
+      "id": "pose_018",
+      "name": "Candid Look Away",
+      "compatibleScenes": ["PARK", "CAFE", "BEACH", "GENERIC"],
+      "bodyParts": ["NOSE", "LEFT_SHOULDER", "RIGHT_SHOULDER"],
+      "overlayHints": [
+        "Turn face 45° away from lens",
+        "Soft contemplative expression",
+        "Shoulders square to camera"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "NOSE", "targetAngleDeg": null, "toleranceDeg": 20, "description": "Face 45° averted"}
+      ],
+      "visualCategory": "STANDING_CASUAL"
+    },
+    {
+      "id": "pose_019",
+      "name": "Hands On Knees Lean",
+      "compatibleScenes": ["INDOOR", "CAFE", "URBAN"],
+      "bodyParts": ["LEFT_WRIST", "RIGHT_WRIST", "LEFT_KNEE", "RIGHT_KNEE", "LEFT_HIP"],
+      "overlayHints": [
+        "Lean forward, hands on knees",
+        "Back straight — don't hunch",
+        "Look directly into lens"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_WRIST", "targetAngleDeg": null, "toleranceDeg": 20, "description": "Wrist at knee"},
+        {"landmarkType": "LEFT_HIP", "targetAngleDeg": 135, "toleranceDeg": 20, "description": "Torso lean forward"}
+      ],
+      "visualCategory": "LEANING"
+    },
+    {
+      "id": "pose_020",
+      "name": "Wrist Cross Chest",
+      "compatibleScenes": ["INDOOR", "CAFE", "GENERIC"],
+      "bodyParts": ["LEFT_WRIST", "RIGHT_WRIST", "LEFT_ELBOW", "RIGHT_ELBOW"],
+      "overlayHints": [
+        "Cross wrists at chest level loosely",
+        "Hands relaxed — not gripping",
+        "Chin down slightly"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_WRIST", "targetAngleDeg": null, "toleranceDeg": 20, "description": "Wrist at chest center"},
+        {"landmarkType": "RIGHT_WRIST", "targetAngleDeg": null, "toleranceDeg": 20, "description": "Wrist at chest center"}
+      ],
+      "visualCategory": "STANDING_CASUAL"
+    },
+    {
+      "id": "pose_021",
+      "name": "Diagonal Torso Twist",
+      "compatibleScenes": ["STREET", "URBAN", "PARK"],
+      "bodyParts": ["LEFT_SHOULDER", "RIGHT_SHOULDER", "LEFT_HIP", "RIGHT_HIP"],
+      "overlayHints": [
+        "Rotate upper torso 30° left",
+        "Keep hips facing forward",
+        "Right arm slightly extended"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_SHOULDER", "targetAngleDeg": null, "toleranceDeg": 20, "description": "Shoulder rotated forward"},
+        {"landmarkType": "RIGHT_HIP", "targetAngleDeg": null, "toleranceDeg": 15, "description": "Hip facing camera"}
+      ],
+      "visualCategory": "STANDING_DYNAMIC"
+    },
+    {
+      "id": "pose_022",
+      "name": "Ground Seat Lean Back",
+      "compatibleScenes": ["BEACH", "PARK"],
+      "bodyParts": ["LEFT_HIP", "RIGHT_HIP", "LEFT_WRIST", "RIGHT_WRIST", "LEFT_KNEE", "RIGHT_KNEE"],
+      "overlayHints": [
+        "Sit on ground, knees bent",
+        "Lean back on both palms",
+        "Face camera with relaxed gaze"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_WRIST", "targetAngleDeg": null, "toleranceDeg": 25, "description": "Palm on ground behind"},
+        {"landmarkType": "LEFT_KNEE", "targetAngleDeg": 100, "toleranceDeg": 20, "description": "Knee bent comfortably"}
+      ],
+      "visualCategory": "SITTING"
+    },
+    {
+      "id": "pose_023",
+      "name": "Architectural Lean Double",
+      "compatibleScenes": ["URBAN", "LANDMARK", "INDOOR"],
+      "bodyParts": ["LEFT_SHOULDER", "LEFT_ELBOW", "LEFT_WRIST", "LEFT_HIP"],
+      "overlayHints": [
+        "Place forearm flat against wall",
+        "Lean side of head toward arm",
+        "Body at 30° to the surface"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_ELBOW", "targetAngleDeg": 90, "toleranceDeg": 20, "description": "Forearm on surface"},
+        {"landmarkType": "LEFT_SHOULDER", "targetAngleDeg": null, "toleranceDeg": 20, "description": "Shoulder close to wall"}
+      ],
+      "visualCategory": "LEANING"
+    },
+    {
+      "id": "pose_024",
+      "name": "Hands Behind Back",
+      "compatibleScenes": ["PARK", "LANDMARK", "GENERIC"],
+      "bodyParts": ["LEFT_WRIST", "RIGHT_WRIST", "LEFT_SHOULDER", "RIGHT_SHOULDER", "NOSE"],
+      "overlayHints": [
+        "Clasp hands behind lower back",
+        "Stand tall, chest open",
+        "Feet hip-width apart"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_WRIST", "targetAngleDeg": null, "toleranceDeg": 20, "description": "Wrist behind torso"},
+        {"landmarkType": "RIGHT_WRIST", "targetAngleDeg": null, "toleranceDeg": 20, "description": "Wrist behind torso"}
+      ],
+      "visualCategory": "STANDING_CASUAL"
+    },
+    {
+      "id": "pose_025",
+      "name": "Running Pose Freeze",
+      "compatibleScenes": ["PARK", "BEACH", "STREET"],
+      "bodyParts": ["LEFT_KNEE", "RIGHT_KNEE", "LEFT_ELBOW", "RIGHT_ELBOW"],
+      "overlayHints": [
+        "Freeze mid-run — one knee high",
+        "Opposite elbow drives forward",
+        "Lean body slightly forward"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_KNEE", "targetAngleDeg": 90, "toleranceDeg": 20, "description": "Knee lifted 90°"},
+        {"landmarkType": "RIGHT_ELBOW", "targetAngleDeg": 90, "toleranceDeg": 20, "description": "Drive elbow forward"}
+      ],
+      "visualCategory": "WALKING_PAUSE"
+    },
+    {
+      "id": "pose_026",
+      "name": "Back To Camera Arms Up",
+      "compatibleScenes": ["BEACH", "PARK", "LANDMARK"],
+      "bodyParts": ["LEFT_WRIST", "RIGHT_WRIST", "LEFT_ELBOW", "RIGHT_ELBOW", "NOSE"],
+      "overlayHints": [
+        "Face away from camera",
+        "Both arms raised wide overhead",
+        "Head slightly tilted back"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_WRIST", "targetAngleDeg": 165, "toleranceDeg": 20, "description": "Wrist overhead"},
+        {"landmarkType": "RIGHT_WRIST", "targetAngleDeg": 165, "toleranceDeg": 20, "description": "Wrist overhead"}
+      ],
+      "visualCategory": "ARMS_EXPRESSIVE"
+    },
+    {
+      "id": "pose_027",
+      "name": "Coffee Cup Hold",
+      "compatibleScenes": ["CAFE", "INDOOR"],
+      "bodyParts": ["RIGHT_WRIST", "RIGHT_ELBOW", "LEFT_SHOULDER", "NOSE"],
+      "overlayHints": [
+        "Hold cup at chest height in one hand",
+        "Other hand rests on arm or hip",
+        "Gaze downward at cup"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "RIGHT_ELBOW", "targetAngleDeg": 80, "toleranceDeg": 20, "description": "Elbow bent, cup held"},
+        {"landmarkType": "NOSE", "targetAngleDeg": null, "toleranceDeg": 20, "description": "Looking slightly down"}
+      ],
+      "visualCategory": "SITTING"
+    },
+    {
+      "id": "pose_028",
+      "name": "360 Spin Pause",
+      "compatibleScenes": ["URBAN", "STREET", "CAFE"],
+      "bodyParts": ["LEFT_SHOULDER", "RIGHT_SHOULDER", "NOSE", "LEFT_ANKLE"],
+      "overlayHints": [
+        "Mid-spin catch — arms slightly out",
+        "One foot on toe, body rotating",
+        "Look over spinning shoulder"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_ANKLE", "targetAngleDeg": null, "toleranceDeg": 25, "description": "On tiptoe"},
+        {"landmarkType": "LEFT_SHOULDER", "targetAngleDeg": null, "toleranceDeg": 20, "description": "Rotated mid-turn"}
+      ],
+      "visualCategory": "STANDING_DYNAMIC"
+    },
+    {
+      "id": "pose_029",
+      "name": "Mono Leg Balance",
+      "compatibleScenes": ["BEACH", "PARK"],
+      "bodyParts": ["LEFT_KNEE", "LEFT_ANKLE", "RIGHT_KNEE", "LEFT_HIP", "RIGHT_HIP"],
+      "overlayHints": [
+        "Balance on one foot",
+        "Raised knee at 45°",
+        "Arms out slightly for balance"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "RIGHT_KNEE", "targetAngleDeg": 120, "toleranceDeg": 25, "description": "Knee raised 45°"},
+        {"landmarkType": "LEFT_ANKLE", "targetAngleDeg": null, "toleranceDeg": 20, "description": "Single foot grounded"}
+      ],
+      "visualCategory": "STANDING_DYNAMIC"
+    },
+    {
+      "id": "pose_030",
+      "name": "Jacket Collar Pop",
+      "compatibleScenes": ["STREET", "URBAN", "INDOOR"],
+      "bodyParts": ["LEFT_WRIST", "RIGHT_WRIST", "LEFT_ELBOW", "RIGHT_ELBOW", "LEFT_SHOULDER", "RIGHT_SHOULDER"],
+      "overlayHints": [
+        "Grab jacket lapels with both hands",
+        "Elbows flared slightly outward",
+        "Smize — eyes confident"
+      ],
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_ELBOW", "targetAngleDeg": 95, "toleranceDeg": 20, "description": "Elbow out and down"},
+        {"landmarkType": "RIGHT_ELBOW", "targetAngleDeg": 95, "toleranceDeg": 20, "description": "Elbow out and down"},
+        {"landmarkType": "LEFT_WRIST", "targetAngleDeg": null, "toleranceDeg": 20, "description": "Wrist at collar level"}
+      ],
+      "visualCategory": "STANDING_CASUAL"
+    }
+  ]
+}
