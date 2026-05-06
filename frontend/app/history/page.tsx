@@ -78,7 +78,7 @@ function HistoryContent() {
           <Link href="/dashboard" className="btn-ghost py-2 px-3" aria-label="Back to dashboard">
             <ArrowLeft size={16} />
           </Link>
-          <h1 className="text-3xl font-black" style={{ fontFamily: 'Syne, sans-serif', letterSpacing: '-0.03em' }}>
+          <h1 className="text-3xl font-black font-syne tracking-tight">
             Pose History
           </h1>
         </div>
@@ -92,7 +92,7 @@ function HistoryContent() {
               className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 capitalize ${
                 filter === f ? 'bg-blue-500 text-white' : 'text-muted hover:text-white'
               }`}
-              aria-pressed={filter === f}
+              aria-pressed={filter === f ? 'true' : 'false'}
             >
               {f === 'all' ? 'All Time' : f === 'week' ? 'This Week' : 'This Month'}
             </button>
@@ -113,7 +113,7 @@ function HistoryContent() {
             className="glass-card p-16 text-center"
           >
             <Camera size={48} className="text-muted mx-auto mb-4" />
-            <h2 className="text-xl font-bold mb-2" style={{ fontFamily: 'Syne, sans-serif' }}>No poses yet</h2>
+            <h2 className="text-xl font-bold mb-2 font-syne">No poses yet</h2>
             <p className="text-muted text-sm mb-8">Capture your first pose to see it here.</p>
             <Link href="/camera" className="btn-primary inline-flex gap-2">
               <Camera size={16} /> Open Camera
@@ -151,7 +151,7 @@ function HistoryContent() {
                         strokeLinecap="round"
                       />
                     </svg>
-                    <span className="absolute inset-0 flex items-center justify-center text-xs font-black" style={{ color: scoreColor, fontFamily: 'Syne, sans-serif' }}>
+                      <span className="absolute inset-0 flex items-center justify-center text-xs font-black font-syne" style={{ color: scoreColor }}>
                       {pose.score}
                     </span>
                   </div>

@@ -92,7 +92,7 @@ function ProfileContent() {
           <Link href="/dashboard" className="btn-ghost py-2 px-3" aria-label="Back to dashboard">
             <ArrowLeft size={16} />
           </Link>
-          <h1 className="text-3xl font-black" style={{ fontFamily: 'Syne, sans-serif', letterSpacing: '-0.03em' }}>
+          <h1 className="text-3xl font-black font-syne tracking-tight">
             Profile
           </h1>
         </div>
@@ -106,7 +106,7 @@ function ProfileContent() {
           {/* Avatar + Name */}
           <motion.div variants={fadeInUp} transition={EASE_OUT_EXPO} className="glass-card p-8 flex items-center gap-6">
             <div className="relative shrink-0">
-              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-2xl font-black" style={{ fontFamily: 'Syne, sans-serif' }}>
+              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-2xl font-black font-syne">
                 {user.firstName?.[0]}{user.lastName?.[0]}
               </div>
               <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-emerald-500 border-2 border-[#050A18] flex items-center justify-center">
@@ -114,7 +114,7 @@ function ProfileContent() {
               </div>
             </div>
             <div className="flex-1 min-w-0">
-              <h2 className="text-2xl font-black" style={{ fontFamily: 'Syne, sans-serif' }}>
+              <h2 className="text-2xl font-black font-syne">
                 {user.firstName} {user.lastName}
               </h2>
               <p className="text-muted text-sm">{user.email}</p>
@@ -130,7 +130,7 @@ function ProfileContent() {
                   <c.icon size={16} className={c.color} />
                 </div>
                 <p className="text-muted text-xs">{c.label}</p>
-                <p className="text-xl font-black" style={{ fontFamily: 'Syne, sans-serif' }}>{c.value}</p>
+                <p className="text-xl font-black font-syne">{c.value}</p>
               </div>
             ))}
           </motion.div>
@@ -145,7 +145,7 @@ function ProfileContent() {
                   className={`px-5 py-2 rounded-xl text-sm font-medium capitalize transition-all duration-200 flex items-center gap-2 ${
                     activeTab === tab ? 'bg-blue-500 text-white' : 'text-muted hover:text-white'
                   }`}
-                  aria-pressed={activeTab === tab}
+                  aria-pressed={activeTab === tab ? 'true' : 'false'}
                 >
                   {tab === 'profile' ? <User size={14} /> : <Lock size={14} />}
                   {tab}
@@ -156,7 +156,7 @@ function ProfileContent() {
             {activeTab === 'profile' && (
               <div className="glass-card p-6">
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="font-bold" style={{ fontFamily: 'Syne, sans-serif' }}>Personal Info</h3>
+                  <h3 className="font-bold font-syne">Personal Info</h3>
                   {!editing && (
                     <button onClick={() => setEditing(true)} className="btn-ghost py-1.5 px-3 text-sm gap-1.5">
                       <Edit2 size={13} /> Edit
@@ -197,8 +197,8 @@ function ProfileContent() {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-xs text-muted mb-1.5">Email address</label>
-                    <input value={user.email} className="input-field opacity-60" disabled aria-readonly="true" />
+                    <label htmlFor="profile-email" className="block text-xs text-muted mb-1.5">Email address</label>
+                    <input id="profile-email" value={user.email} className="input-field opacity-60" disabled aria-readonly="true" />
                   </div>
 
                   {editing && (
@@ -217,7 +217,7 @@ function ProfileContent() {
 
             {activeTab === 'security' && (
               <div className="glass-card p-6">
-                <h3 className="font-bold mb-6" style={{ fontFamily: 'Syne, sans-serif' }}>Change Password</h3>
+                <h3 className="font-bold mb-6 font-syne">Change Password</h3>
 
                 {pwMsg && (
                   <div className={`flex items-center gap-2 p-3 mb-4 rounded-xl text-sm ${

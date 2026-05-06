@@ -37,6 +37,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   /* Prevent font size inflation on orientation change */
   -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
 
@@ -47,8 +48,8 @@ body {
   min-height: 100vh;
   min-height: 100dvh;
   overflow-x: hidden;
-  /* Momentum scrolling on iOS */
-  -webkit-overflow-scrolling: touch;
+  /* Momentum scrolling on iOS — touch-action handles modern browsers */
+  -webkit-overflow-scrolling: touch; /* Legacy iOS < 13 only */
 }
 
 /* ── Typography ───────────────────────────────────────────────── */
@@ -74,8 +75,8 @@ h1, h2, h3, h4, h5, h6 {
 @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
   .glass-card {
     background: var(--glass-bg);
-    backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
   }
 }
 
@@ -426,3 +427,81 @@ circle.score-ring-fill {
   50%       { opacity: 1;   }
 }
 
+
+/* ── Syne font utility (used across components) ─────────────────── */
+.font-syne {
+  font-family: 'Syne', sans-serif;
+}
+
+/* ── Tracking tight utility ─────────────────────────────────────── */
+.tracking-tight {
+  letter-spacing: -0.03em;
+}
+
+/* ── Camera layout utilities ────────────────────────────────────── */
+.camera-top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 60;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.camera-bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 60;
+  padding-bottom: 24px;
+}
+
+.camera-shutter-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 84px;
+}
+
+.camera-zoom-widget {
+  width: 48px;
+}
+
+.camera-shutter-btn {
+  position: relative;
+  width: 84px;
+  height: 84px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.camera-shutter-outer {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.25);
+}
+
+.camera-shutter-inner {
+  position: absolute;
+  top: 6px; left: 6px; right: 6px; bottom: 6px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+.camera-pose-instruction {
+  position: fixed;
+  top: 90px;
+  left: 20px;
+  z-index: 50;
+  max-width: 200px;
+}

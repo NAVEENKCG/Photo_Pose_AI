@@ -61,12 +61,12 @@ function LoginContent() {
               <Camera size={18} className="text-white" />
             </div>
             <div>
-              <p className="font-black text-base" style={{ fontFamily: 'Syne, sans-serif' }}>AI Pose Aid</p>
+              <p className="font-black text-base font-syne">AI Pose Aid</p>
               <p className="text-muted text-xs">Photography Guide</p>
             </div>
           </div>
 
-          <h1 className="text-3xl font-black mb-2" style={{ fontFamily: 'Syne, sans-serif', letterSpacing: '-0.03em' }}>
+          <h1 className="text-3xl font-black mb-2 font-syne tracking-tight">
             Welcome back
           </h1>
           <p className="text-muted text-sm mb-8">Sign in to continue your posing journey</p>
@@ -103,7 +103,7 @@ function LoginContent() {
                   placeholder="you@example.com"
                   autoComplete="email"
                   aria-describedby={fieldErrors.email ? 'email-error' : undefined}
-                  aria-invalid={!!fieldErrors.email}
+                  aria-invalid={fieldErrors.email ? 'true' : 'false'}
                 />
               </div>
               {fieldErrors.email && (
@@ -130,7 +130,7 @@ function LoginContent() {
                   placeholder="••••••••••••"
                   autoComplete="current-password"
                   aria-describedby={fieldErrors.password ? 'pw-error' : undefined}
-                  aria-invalid={!!fieldErrors.password}
+                  aria-invalid={fieldErrors.password ? 'true' : 'false'}
                 />
                 <button
                   type="button"

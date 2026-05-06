@@ -57,7 +57,7 @@ function Navbar({ onLogout }: { onLogout: () => void }) {
           <div className="w-7 h-7 rounded-lg bg-blue-500 flex items-center justify-center">
             <Camera size={14} className="text-white" />
           </div>
-          <span className="font-bold text-sm" style={{ fontFamily: 'Syne, sans-serif' }}>AI Pose Aid</span>
+          <span className="font-bold text-sm font-syne">AI Pose Aid</span>
         </div>
 
         <div className="flex items-center gap-2">
@@ -140,8 +140,7 @@ function DashboardContent() {
           <motion.h1
             variants={fadeInUp}
             transition={EASE_OUT_EXPO}
-            className="text-5xl font-black mb-3"
-            style={{ fontFamily: 'Syne, sans-serif', letterSpacing: '-0.03em' }}
+            className="text-5xl font-black mb-3 font-syne tracking-tight"
           >
             Welcome back,{' '}
             <span className="gradient-text">{user.firstName}</span>!
@@ -192,7 +191,7 @@ function DashboardContent() {
                 <card.icon size={18} className={card.color} />
               </div>
               <p className="text-muted text-xs mb-1">{card.label}</p>
-              <p className="text-2xl font-black" style={{ fontFamily: 'Syne, sans-serif' }}>
+              <p className="text-2xl font-black font-syne">
                 {poseLoading ? <span className="skeleton w-16 h-7 block rounded" /> : card.value}
               </p>
             </motion.div>
@@ -206,7 +205,7 @@ function DashboardContent() {
           transition={{ ...EASE_OUT_EXPO, delay: 0.4 }}
         >
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-black" style={{ fontFamily: 'Syne, sans-serif' }}>Recent Sessions</h2>
+            <h2 className="text-2xl font-black font-syne">Recent Sessions</h2>
             <Link href="/history" className="text-blue-400 hover:text-blue-300 transition-colors text-sm flex items-center gap-1">
               View all <ChevronRight size={14} />
             </Link>
@@ -221,7 +220,7 @@ function DashboardContent() {
           ) : poses.length === 0 ? (
             <div className="glass-card p-12 text-center">
               <Camera size={40} className="text-muted mx-auto mb-4" />
-              <h3 className="text-lg font-bold mb-2" style={{ fontFamily: 'Syne, sans-serif' }}>No poses yet</h3>
+              <h3 className="text-lg font-bold mb-2 font-syne">No poses yet</h3>
               <p className="text-muted text-sm mb-6">Open the camera and capture your first pose!</p>
               <Link href="/camera" className="btn-primary inline-flex gap-2">
                 <Camera size={16} /> Open Camera
@@ -254,7 +253,7 @@ function DashboardContent() {
                           strokeLinecap="round"
                         />
                       </svg>
-                      <span className="absolute inset-0 flex items-center justify-center text-xs font-black" style={{ fontFamily: 'Syne, sans-serif', color: ScoreColor(pose.score) }}>
+                      <span className="absolute inset-0 flex items-center justify-center text-xs font-black font-syne" style={{ color: ScoreColor(pose.score) }}>
                         {pose.score}
                       </span>
                     </div>

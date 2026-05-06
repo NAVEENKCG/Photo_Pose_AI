@@ -702,13 +702,13 @@ function CameraContent() {
   return (
     <div className="w-full h-[100dvh] bg-black overflow-hidden relative">
       {/* Video feed */}
-      <video ref={videoRef} className="fixed inset-0 w-full h-full object-cover z-0"
+      <video ref={videoRef} className="fixed inset-0 w-full h-full object-cover z-0 top-0 left-0"
         playsInline muted aria-label="Camera feed"
-        style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0, objectFit: 'cover', transform: front ? 'scaleX(-1)' : 'none' }} />
+        style={{ transform: front ? 'scaleX(-1)' : 'none' }} />
 
       {/* Skeleton canvas */}
-      <canvas ref={canvasRef} className="fixed inset-0 w-full h-full object-cover pointer-events-none z-10"
-        aria-hidden="true" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 10, pointerEvents: 'none', transform: front ? 'scaleX(-1)' : 'none' }} />
+      <canvas ref={canvasRef} className="fixed inset-0 w-full h-full object-cover pointer-events-none z-10 top-0 left-0"
+        aria-hidden="true" style={{ transform: front ? 'scaleX(-1)' : 'none' }} />
 
       {/* Vignette */}
       <div className="fixed inset-0 pointer-events-none z-[15]" style={{
@@ -743,7 +743,7 @@ function CameraContent() {
       </AnimatePresence>
 
       {/* ── TOP BAR ── */}
-      <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 60, padding: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="camera-top-bar">
         <Link href="/dashboard" aria-label="Back"
           className="w-12 h-12 rounded-full flex items-center justify-center bg-black/50 backdrop-blur-lg border border-white/10 shrink-0">
           <ArrowLeft size={20} className="text-white" />
@@ -769,7 +769,7 @@ function CameraContent() {
         {cameraOn && (
           <motion.div key={activePose.id}
             initial={{opacity:0, x:-14}} animate={{opacity:1, x:0}} exit={{opacity:0, x:-14}}
-            style={{ position: 'fixed', top: '90px', left: '20px', zIndex: 50, maxWidth: '200px' }}
+            className="camera-pose-instruction"
           >
             <p className="text-[11px] font-semibold tracking-widest uppercase text-white/45 mb-1">AI Pose</p>
             <p className="text-white font-bold text-[18px] leading-snug drop-shadow-md">{activePose.instruction}</p>
@@ -778,7 +778,7 @@ function CameraContent() {
       </AnimatePresence>
 
       {/* ── BOTTOM: shutter + pose carousel ── */}
-      <div style={{ position: 'fixed', bottom: 0, left: 0, width: '100%', zIndex: 60, paddingBottom: '24px' }}>
+      <div className="camera-bottom-bar">
         
         {/* Pose Thumbnail Carousel */}
         <AnimatePresence>
@@ -802,24 +802,24 @@ function CameraContent() {
         </AnimatePresence>
 
         {/* Shutter row */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 32px', height: '84px' }}>
+        <div className="camera-shutter-row">
           
           {/* Zoom Slider */}
-          <div className="flex flex-col items-center justify-center gap-[6px]" style={{ width: 48, visibility: zoomRange.max > 1.2 ? 'visible' : 'hidden' }}>
+          <div className="flex flex-col items-center justify-center gap-[6px] camera-zoom-widget" style={{ visibility: zoomRange.max > 1.2 ? 'visible' : 'hidden' }}>
             <span className="text-[10px] font-bold text-white shadow-sm drop-shadow-md">{zoom.toFixed(1)}x</span>
-            <input type="range" min={zoomRange.min} max={Math.min(zoomRange.max, 5)} step="0.1" value={zoom} onChange={handleZoomChange}
-              className="w-[60px] h-[3px] appearance-none rounded-full bg-white/25 accent-white cursor-pointer -rotate-90 origin-center absolute translate-y-[-24px]"
-              style={{ zIndex: 10, outline: 'none', right: -6 }} />
+            <label htmlFor="zoom-slider" className="sr-only">Camera zoom</label>
+            <input id="zoom-slider" type="range" min={zoomRange.min} max={Math.min(zoomRange.max, 5)} step="0.1" value={zoom} onChange={handleZoomChange}
+              title="Camera zoom"
+              className="w-[60px] h-[3px] appearance-none rounded-full bg-white/25 accent-white cursor-pointer -rotate-90 origin-center absolute translate-y-[-24px] z-10 outline-none" style={{ right: -6 }} />
           </div>
           
           {/* Shutter button */}
           <motion.button onClick={capture} disabled={capturing || !cameraOn || captured}
             whileTap={{ scale: 0.86 }} aria-label="Capture"
-            className="flex items-center justify-center bg-transparent appearance-none border-none p-0 cursor-pointer focus:outline-none"
-            style={{ position: 'relative', width: 84, height: 84, WebkitAppearance: 'none' }}
+            className="camera-shutter-btn flex items-center justify-center focus:outline-none"
           >
-            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.25)' }} />
-            <div style={{ position: 'absolute', top: 6, left: 6, right: 6, bottom: 6, borderRadius: '50%', border: '1px solid rgba(255,255,255,0.15)' }} />
+            <div className="camera-shutter-outer" />
+            <div className="camera-shutter-inner" />
             <motion.div className="rounded-full bg-white flex items-center justify-center"
               style={{ width: 62, height: 62 }} animate={{ scale: capturing ? 0.76 : 1 }}
             >

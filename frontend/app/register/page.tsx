@@ -80,12 +80,12 @@ function RegisterContent() {
               <Camera size={18} className="text-white" />
             </div>
             <div>
-              <p className="font-black text-base" style={{ fontFamily: 'Syne, sans-serif' }}>AI Pose Aid</p>
+              <p className="font-black text-base font-syne">AI Pose Aid</p>
               <p className="text-muted text-xs">Create your account</p>
             </div>
           </div>
 
-          <h1 className="text-3xl font-black mb-2" style={{ fontFamily: 'Syne, sans-serif', letterSpacing: '-0.03em' }}>
+          <h1 className="text-3xl font-black mb-2 font-syne tracking-tight">
             Start improving
           </h1>
           <p className="text-muted text-sm mb-8">Free account — analyze unlimited poses</p>
@@ -121,7 +121,7 @@ function RegisterContent() {
                     className={`input-field pl-10 ${fieldErrors.firstName ? 'input-error' : ''}`}
                     placeholder="John"
                     autoComplete="given-name"
-                    aria-invalid={!!fieldErrors.firstName}
+                    aria-invalid={fieldErrors.firstName ? 'true' : 'false'}
                   />
                 </div>
                 {fieldErrors.firstName && <p className="mt-1 text-xs text-red-400">{fieldErrors.firstName}</p>}
@@ -136,7 +136,7 @@ function RegisterContent() {
                   className={`input-field ${fieldErrors.lastName ? 'input-error' : ''}`}
                   placeholder="Doe"
                   autoComplete="family-name"
-                  aria-invalid={!!fieldErrors.lastName}
+                  aria-invalid={fieldErrors.lastName ? 'true' : 'false'}
                 />
                 {fieldErrors.lastName && <p className="mt-1 text-xs text-red-400">{fieldErrors.lastName}</p>}
               </div>
@@ -155,7 +155,7 @@ function RegisterContent() {
                   className={`input-field pl-10 ${fieldErrors.email ? 'input-error' : ''}`}
                   placeholder="you@example.com"
                   autoComplete="email"
-                  aria-invalid={!!fieldErrors.email}
+                  aria-invalid={fieldErrors.email ? 'true' : 'false'}
                 />
               </div>
               {fieldErrors.email && <p className="mt-1.5 text-xs text-red-400">{fieldErrors.email}</p>}
@@ -174,7 +174,7 @@ function RegisterContent() {
                   className={`input-field pl-10 pr-10 ${fieldErrors.password ? 'input-error' : ''}`}
                   placeholder="Make it strong…"
                   autoComplete="new-password"
-                  aria-invalid={!!fieldErrors.password}
+                  aria-invalid={fieldErrors.password ? 'true' : 'false'}
                 />
                 <button
                   type="button"
