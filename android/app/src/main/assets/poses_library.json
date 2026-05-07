@@ -1,0 +1,158 @@
+{
+  "version": "2.0.0",
+  "poses": [
+    {
+      "id": "pose_001",
+      "name": "Relaxed Shoulder Drop",
+      "compatibleEnvironments": ["BEACH", "PARK", "GENERIC"],
+      "compatibleLighting": ["GOLDEN_HOUR", "OVERCAST"],
+      "bodyCategory": "STANDING_RELAXED",
+      "overlayInstructions": ["Drop shoulders down", "Shift weight to left"],
+      "landmarkAngles": {
+        "LEFT_SHOULDER": 160,
+        "RIGHT_SHOULDER": 160
+      },
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_SHOULDER", "targetAngleDeg": 160, "toleranceDeg": 15, "description": "Shoulder down"},
+        {"landmarkType": "LEFT_HIP", "targetAngleDeg": null, "toleranceDeg": 20, "description": "Weight shifted"}
+      ],
+      "visualVariety": ["ASYMMETRICAL", "FACING_CAMERA"]
+    },
+    {
+      "id": "pose_002",
+      "name": "Power Stance Crossed",
+      "compatibleEnvironments": ["URBAN", "STREET", "INDOOR", "ROOFTOP"],
+      "compatibleLighting": ["HARSH_NOON", "INDOOR_COOL"],
+      "bodyCategory": "STANDING_DYNAMIC",
+      "overlayInstructions": ["Cross arms firmly", "Chin slightly up"],
+      "landmarkAngles": {
+        "LEFT_ELBOW": 90,
+        "RIGHT_ELBOW": 90
+      },
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_ELBOW", "targetAngleDeg": 90, "toleranceDeg": 20, "description": "Elbow 90°"},
+        {"landmarkType": "RIGHT_ELBOW", "targetAngleDeg": 90, "toleranceDeg": 20, "description": "Elbow 90°"}
+      ],
+      "visualVariety": ["SYMMETRICAL", "CLOSED_STANCE", "FACING_CAMERA"]
+    },
+    {
+      "id": "pose_003",
+      "name": "Coastal Wind Lean",
+      "compatibleEnvironments": ["BEACH", "LANDMARK"],
+      "compatibleLighting": ["GOLDEN_HOUR"],
+      "bodyCategory": "LEANING",
+      "overlayInstructions": ["Hand in hair", "Lean slightly back"],
+      "landmarkAngles": {
+        "RIGHT_WRIST": 145
+      },
+      "landmarkTargets": [
+        {"landmarkType": "RIGHT_WRIST", "targetAngleDeg": 145, "toleranceDeg": 25, "description": "Hand near head"}
+      ],
+      "visualVariety": ["ASYMMETRICAL", "OPEN_STANCE", "THREE_QUARTER"]
+    },
+    {
+      "id": "pose_004",
+      "name": "Cafe Contemplation",
+      "compatibleEnvironments": ["CAFE", "INDOOR", "STREET"],
+      "compatibleLighting": ["INDOOR_WARM", "LOW_LIGHT"],
+      "bodyCategory": "SEATED",
+      "overlayInstructions": ["Rest chin on hand", "Look off camera"],
+      "landmarkAngles": {
+        "LEFT_ELBOW": 85
+      },
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_ELBOW", "targetAngleDeg": 85, "toleranceDeg": 20, "description": "Resting elbow"}
+      ],
+      "visualVariety": ["ASYMMETRICAL", "THREE_QUARTER"]
+    },
+    {
+      "id": "pose_005",
+      "name": "Urban Step Forward",
+      "compatibleEnvironments": ["STREET", "URBAN", "PARK"],
+      "compatibleLighting": ["OVERCAST", "GOLDEN_HOUR"],
+      "bodyCategory": "WALKING_PAUSED",
+      "overlayInstructions": ["One foot forward", "Arms swing natural"],
+      "landmarkAngles": {
+        "LEFT_KNEE": 155
+      },
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_KNEE", "targetAngleDeg": 155, "toleranceDeg": 20, "description": "Knee bent"}
+      ],
+      "visualVariety": ["ASYMMETRICAL", "OPEN_STANCE", "FACING_CAMERA"]
+    },
+    {
+      "id": "pose_006",
+      "name": "Over Shoulder Glance",
+      "compatibleEnvironments": ["STREET", "BEACH", "FOREST", "LANDMARK"],
+      "compatibleLighting": ["GOLDEN_HOUR", "LOW_LIGHT"],
+      "bodyCategory": "PROFILE_TURN",
+      "overlayInstructions": ["Turn back to camera", "Look over shoulder"],
+      "landmarkAngles": {},
+      "landmarkTargets": [
+        {"landmarkType": "NOSE", "targetAngleDeg": null, "toleranceDeg": 20, "description": "Head turned"}
+      ],
+      "visualVariety": ["ASYMMETRICAL", "PROFILE"]
+    },
+    {
+      "id": "pose_007",
+      "name": "Golden Silhouette",
+      "compatibleEnvironments": ["BEACH", "ROOFTOP", "GENERIC"],
+      "compatibleLighting": ["GOLDEN_HOUR"],
+      "bodyCategory": "ARMS_EXPRESSIVE",
+      "overlayInstructions": ["Arms wide up", "Face toward sun"],
+      "landmarkAngles": {
+        "LEFT_WRIST": 150,
+        "RIGHT_WRIST": 150
+      },
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_WRIST", "targetAngleDeg": 150, "toleranceDeg": 20, "description": "Arm up"}
+      ],
+      "visualVariety": ["SYMMETRICAL", "OPEN_STANCE", "FACING_CAMERA"]
+    },
+    {
+      "id": "pose_008",
+      "name": "Candid Look Away",
+      "compatibleEnvironments": ["PARK", "CAFE", "FOREST"],
+      "compatibleLighting": ["OVERCAST", "INDOOR_WARM"],
+      "bodyCategory": "CANDID",
+      "overlayInstructions": ["Face 45° away", "Shoulders square"],
+      "landmarkAngles": {},
+      "landmarkTargets": [
+        {"landmarkType": "NOSE", "targetAngleDeg": null, "toleranceDeg": 20, "description": "Face averted"}
+      ],
+      "visualVariety": ["ASYMMETRICAL", "THREE_QUARTER"]
+    },
+    {
+      "id": "pose_009",
+      "name": "Crouched Ground",
+      "compatibleEnvironments": ["STREET", "FOREST", "PARK"],
+      "compatibleLighting": ["OVERCAST", "HARSH_NOON"],
+      "bodyCategory": "CROUCHED",
+      "overlayInstructions": ["Squat low", "Rest arms on knees"],
+      "landmarkAngles": {
+        "LEFT_KNEE": 45,
+        "RIGHT_KNEE": 45
+      },
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_KNEE", "targetAngleDeg": 45, "toleranceDeg": 20, "description": "Squat"}
+      ],
+      "visualVariety": ["SYMMETRICAL", "CLOSED_STANCE", "FACING_CAMERA"]
+    },
+    {
+      "id": "pose_010",
+      "name": "Overhead Reach",
+      "compatibleEnvironments": ["FOREST", "PARK", "BEACH"],
+      "compatibleLighting": ["GOLDEN_HOUR", "OVERCAST"],
+      "bodyCategory": "OVERHEAD_REACH",
+      "overlayInstructions": ["Reach for sky", "Stand tall"],
+      "landmarkAngles": {
+        "LEFT_ELBOW": 175,
+        "RIGHT_ELBOW": 175
+      },
+      "landmarkTargets": [
+        {"landmarkType": "LEFT_ELBOW", "targetAngleDeg": 175, "toleranceDeg": 15, "description": "Straight arm"}
+      ],
+      "visualVariety": ["SYMMETRICAL", "OPEN_STANCE", "FACING_CAMERA"]
+    }
+  ]
+}

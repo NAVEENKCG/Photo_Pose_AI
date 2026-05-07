@@ -1,0 +1,22 @@
+{
+  "version": "1.0.0",
+  "environmentRankings": {
+    "BEACH": ["pose_003", "pose_007", "pose_001", "pose_006", "pose_010"],
+    "STREET": ["pose_005", "pose_002", "pose_006", "pose_009", "pose_004"],
+    "CAFE": ["pose_004", "pose_008"],
+    "PARK": ["pose_001", "pose_005", "pose_008", "pose_009", "pose_010"],
+    "INDOOR": ["pose_004", "pose_002"],
+    "LANDMARK": ["pose_006", "pose_003"],
+    "FOREST": ["pose_010", "pose_009", "pose_008", "pose_006"],
+    "ROOFTOP": ["pose_002", "pose_007"],
+    "GENERIC": ["pose_001", "pose_007"]
+  },
+  "lightingRankings": {
+    "GOLDEN_HOUR": ["pose_007", "pose_003", "pose_006", "pose_005", "pose_010", "pose_001"],
+    "HARSH_NOON": ["pose_002", "pose_009"],
+    "OVERCAST": ["pose_001", "pose_005", "pose_008", "pose_009", "pose_010"],
+    "INDOOR_WARM": ["pose_004", "pose_008"],
+    "INDOOR_COOL": ["pose_002"],
+    "LOW_LIGHT": ["pose_004", "pose_006"]
+  }
+}

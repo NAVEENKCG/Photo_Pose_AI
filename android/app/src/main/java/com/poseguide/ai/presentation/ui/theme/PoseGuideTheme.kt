@@ -15,7 +15,7 @@ import androidx.core.view.WindowCompat
 val Black800      = Color(0xFF050A18)
 val Surface900    = Color(0xFF0D1526)
 val Surface800    = Color(0xFF152035)
-val AccentCyan    = Color(0xFF00E5FF)
+val AccentCyan    = Color(0xFF1D9E75) // XMAGE Teal
 val AccentGold    = Color(0xFFFFD700)
 val White         = Color(0xFFFFFFFF)
 val WhiteDim      = Color(0x99FFFFFF)

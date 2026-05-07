@@ -2,6 +2,7 @@ package com.poseguide.ai.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.poseguide.ai.data.pose.AffinityMatrixLoader
 import com.poseguide.ai.data.pose.PoseMatcher
 import com.poseguide.ai.domain.model.*
 import com.poseguide.ai.domain.repository.PoseRotationManager
@@ -12,29 +13,19 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-/**
- * PoseViewModel — manages the current pose suggestion and its match confidence.
- *
- * Triggers:
- *  - Scene fingerprint change → getNextPose()
- *  - User taps "Next Pose" → getNextPose()
- *  - User holds pose for >8s (auto-advance) → getNextPose()
- */
 @HiltViewModel
 class PoseViewModel @Inject constructor(
-    private val poseRotationManager: PoseRotationManager
+    private val poseRotationManager: PoseRotationManager,
+    private val affinityMatrixLoader: AffinityMatrixLoader
 ) : ViewModel() {
 
     companion object {
-        private const val AUTO_ADVANCE_MS = 8_000L
+        private const val POSE_SKIP_TIMEOUT_MS = 10_000L
+        private const val LOW_CONFIDENCE_THRESHOLD = 0.40f
     }
-
-    // ─── Inputs (set by Activity / composable) ─────────────────────────────────
 
     private val _currentScene = MutableStateFlow<SceneContext?>(null)
     private val _landmarks    = MutableStateFlow<PoseLandmarks?>(null)
-
-    // ─── Output State ─────────────────────────────────────────────────────────
 
     private val _currentPose = MutableStateFlow<PoseTemplate?>(null)
     val currentPose: StateFlow<PoseTemplate?> = _currentPose.asStateFlow()
@@ -45,17 +36,15 @@ class PoseViewModel @Inject constructor(
     private val _isCoachEnabled = MutableStateFlow(true)
     val isCoachEnabled: StateFlow<Boolean> = _isCoachEnabled.asStateFlow()
 
-    private val _instructionText = MutableStateFlow("")
-    val instructionText: StateFlow<String> = _instructionText.asStateFlow()
-
     private var lastFingerprint: String = ""
-    private var autoAdvanceJob: Job? = null
+    private var skipTimeoutJob: Job? = null
 
     init {
+        viewModelScope.launch {
+            affinityMatrixLoader.loadData()
+        }
         observeLandmarks()
     }
-
-    // ─── Public API ────────────────────────────────────────────────────────────
 
     fun updateScene(sceneContext: SceneContext, landmarks: PoseLandmarks?) {
         _currentScene.value = sceneContext
@@ -70,27 +59,19 @@ class PoseViewModel @Inject constructor(
 
     fun requestNextPose(reason: String = "user_tap") {
         val scene = _currentScene.value ?: return
-        val landmarks = _landmarks.value ?: PoseLandmarks()
-        val sceneType = scene.environment.toSceneType()
 
         viewModelScope.launch {
-            val next = poseRotationManager.getNextPose(sceneType, landmarks)
+            val rankedPoses = affinityMatrixLoader.getRankedPoses(scene)
+            val next = poseRotationManager.getNextPose(scene, rankedPoses)
             _currentPose.value = next
-            _instructionText.value = next.overlayHints.firstOrNull() ?: ""
-            resetAutoAdvanceTimer()
+            resetSkipTimer()
         }
-    }
-
-    fun acceptCurrentPose() {
-        val pose = _currentPose.value ?: return
-        val scene = _currentScene.value ?: return
-        poseRotationManager.markPoseAccepted(pose.id, scene.environment.toSceneType())
     }
 
     fun toggleCoach() {
         _isCoachEnabled.value = !_isCoachEnabled.value
         if (!_isCoachEnabled.value) {
-            autoAdvanceJob?.cancel()
+            skipTimeoutJob?.cancel()
             _matchResult.value = null
         }
     }
@@ -102,8 +83,6 @@ class PoseViewModel @Inject constructor(
         lastFingerprint = ""
     }
 
-    // ─── Private ──────────────────────────────────────────────────────────────
-
     private fun observeLandmarks() {
         viewModelScope.launch {
             _landmarks.collect { landmarks ->
@@ -113,31 +92,23 @@ class PoseViewModel @Inject constructor(
                 val result = PoseMatcher.computeMatch(template, landmarks)
                 _matchResult.value = result
 
-                // Update instruction hint from partial feedback
-                val hint = result.partialFeedback.values.firstOrNull()
-                    ?: template.overlayHints.firstOrNull()
-                    ?: ""
-                _instructionText.value = hint
-
-                // Auto-advance when confidence stays high
-                if (result.isReadyToShoot) {
-                    scheduleAutoAdvance()
+                // Restart skip timer if confidence is high
+                if (result.score >= LOW_CONFIDENCE_THRESHOLD) {
+                    resetSkipTimer()
                 }
             }
         }
     }
 
-    private fun scheduleAutoAdvance() {
-        if (autoAdvanceJob?.isActive == true) return
-        autoAdvanceJob = viewModelScope.launch {
-            delay(AUTO_ADVANCE_MS)
-            requestNextPose("auto_advance")
+    private fun resetSkipTimer() {
+        skipTimeoutJob?.cancel()
+        skipTimeoutJob = viewModelScope.launch {
+            delay(POSE_SKIP_TIMEOUT_MS)
+            val currentScore = _matchResult.value?.score ?: 0f
+            if (currentScore < LOW_CONFIDENCE_THRESHOLD) {
+                requestNextPose("auto_skip_low_confidence")
+            }
         }
-    }
-
-    private fun resetAutoAdvanceTimer() {
-        autoAdvanceJob?.cancel()
-        autoAdvanceJob = null
     }
 
     fun updateLandmarks(landmarks: PoseLandmarks?) {

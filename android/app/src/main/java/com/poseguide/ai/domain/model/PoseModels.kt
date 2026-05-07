@@ -3,7 +3,7 @@ package com.poseguide.ai.domain.model
 // ─── Pose Landmark Wrapper ─────────────────────────────────────────────────────
 
 /**
- * Normalized landmark position (0..1 range, relative to image dimensions).
+ * Normalized landmark position (pixel-space from ML Kit's InputImage dimensions).
  */
 data class LandmarkPoint(
     val x: Float,
@@ -33,17 +33,34 @@ enum class PoseLandmarkType {
     LEFT_FOOT_INDEX, RIGHT_FOOT_INDEX
 }
 
-// ─── Pose Template ─────────────────────────────────────────────────────────────
+// ─── Body Category ─────────────────────────────────────────────────────────────
 
-enum class VisualCategory {
-    STANDING_CASUAL,
+enum class BodyCategory {
+    STANDING_RELAXED,
     STANDING_DYNAMIC,
-    SITTING,
+    SEATED,
     LEANING,
-    WALKING_PAUSE,
+    WALKING_PAUSED,
     ARMS_EXPRESSIVE,
+    PROFILE_TURN,
+    CANDID,
+    CROUCHED,
+    OVERHEAD_REACH
+}
+
+// ─── Visual Variety Tags ───────────────────────────────────────────────────────
+
+enum class VisualVariety {
+    SYMMETRICAL,
+    ASYMMETRICAL,
+    OPEN_STANCE,
+    CLOSED_STANCE,
+    FACING_CAMERA,
+    THREE_QUARTER,
     PROFILE
 }
+
+// ─── Landmark Target ───────────────────────────────────────────────────────────
 
 data class LandmarkTarget(
     val landmarkType: PoseLandmarkType,
@@ -52,15 +69,37 @@ data class LandmarkTarget(
     val description: String = ""
 )
 
+// ─── Pose Template ─────────────────────────────────────────────────────────────
+
+/**
+ * A single pose entry from poses_library.json.
+ *
+ * Rule: no two poses in the library may share the same combination of
+ * (bodyCategory + visualVariety[0]). This guarantees structural diversity.
+ */
 data class PoseTemplate(
     val id: String,
     val name: String,
-    val compatibleScenes: List<SceneType>,
-    val bodyParts: List<PoseLandmarkType>,
-    val overlayHints: List<String>,      // Short instruction strings
+    val compatibleEnvironments: List<SceneEnvironment>,
+    val compatibleLighting: List<LightingContext>,
+    val bodyCategory: BodyCategory,
+    val overlayInstructions: List<String>,       // exactly 2 short strings (max 6 words each)
+    val landmarkAngles: Map<String, Float>,       // bodyPart → target angle (degrees)
     val landmarkTargets: List<LandmarkTarget>,
-    val visualCategory: VisualCategory,
-    val thumbnailResId: Int = 0          // drawable resource (optional)
+    val visualVariety: List<VisualVariety>,
+    val thumbnailResId: Int = 0
+)
+
+// ─── Body Proportions ──────────────────────────────────────────────────────────
+
+/**
+ * Measured from 15 frames at session start using MediaPipe Holistic.
+ * Used to scale pose template landmarks to the actual user's body shape.
+ */
+data class BodyProportions(
+    val shoulderWidthRatio: Float = 0f,   // shoulder landmarks / frame width
+    val torsoLengthRatio: Float = 0f,     // shoulder-to-hip distance / frame height
+    val legLengthRatio: Float = 0f        // hip-to-ankle / frame height
 )
 
 // ─── Match Confidence ──────────────────────────────────────────────────────────

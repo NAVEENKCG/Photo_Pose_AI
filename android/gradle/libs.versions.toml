@@ -16,6 +16,9 @@ gson = "2.10.1"
 coroutines = "1.8.1"
 coil = "2.6.0"
 accompanist = "0.34.0"
+okhttp = "4.12.0"
+tflite = "0.4.4"
+palette = "1.0.0"
 
 [libraries]
 # AndroidX Core
@@ -73,6 +76,17 @@ coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coi
 
 # Accompanist
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
+
+# HTTP & APIs
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+
+# TFLite
+tflite-support = { group = "org.tensorflow", name = "tensorflow-lite-support", version.ref = "tflite" }
+tflite-gpu = { group = "org.tensorflow", name = "tensorflow-lite-gpu", version = "2.14.0" }
+
+# UI Additions
+androidx-palette = { group = "androidx.palette", name = "palette", version.ref = "palette" }
+androidx-constraintlayout-compose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version = "1.0.1" }
 
 # Testing
 junit = { group = "junit", name = "junit", version = "4.13.2" }

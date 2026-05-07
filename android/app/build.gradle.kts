@@ -119,6 +119,17 @@ dependencies {
     // Permissions
     implementation(libs.accompanist.permissions)
 
+    // HTTP & APIs
+    implementation(libs.okhttp)
+
+    // TFLite
+    implementation(libs.tflite.support)
+    implementation(libs.tflite.gpu)
+
+    // UI Additions
+    implementation(libs.androidx.palette)
+    implementation(libs.androidx.constraintlayout.compose)
+
     // Testing
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
