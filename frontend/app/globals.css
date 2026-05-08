@@ -47,8 +47,7 @@ body {
   font-family: 'DM Sans', sans-serif;
   min-height: 100vh;
   min-height: 100dvh;
-  overflow-x: hidden;
-  /* Momentum scrolling on iOS — touch-action handles modern browsers */
+  /* Removed overflow-x: hidden to prevent IntersectionObserver bugs on mobile */
   -webkit-overflow-scrolling: touch; /* Legacy iOS < 13 only */
 }
 
