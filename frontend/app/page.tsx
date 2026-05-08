@@ -11,12 +11,9 @@ import { EASE_OUT_EXPO } from '@/lib/animations';
 function HomeContent() {
   const { user, loading } = useAuth();
   const router = useRouter();
-  const shouldReduceMotion = useReducedMotion() ?? false;
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  
+  // Hardcoded to false to prevent hydration mismatches and mobile browser hook crashes
+  const shouldReduceMotion = false;
 
   useEffect(() => {
     if (!loading && user) {
@@ -47,17 +44,8 @@ function HomeContent() {
     },
   ];
 
-  if (!mounted) {
-    // Return visible skeleton matching the layout instead of a blank screen
-    return (
-      <main className="min-h-screen flex items-center justify-center">
-        <div className="skeleton w-32 h-8" />
-      </main>
-    );
-  }
-
   // Fallback entrance for all elements based on user accessibility rules
-  const entranceState = shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 };
+  const entranceState = { opacity: 0, y: 40 };
   const visibleState = { opacity: 1, y: 0 };
 
   return (
