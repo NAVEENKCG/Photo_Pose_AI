@@ -512,5 +512,35 @@ You now have a **complete, production-ready specification** for building a secur
 - ✅ Phase-by-phase implementation plan
 - ✅ Visual architecture diagrams
 
+---
 
+## 🚀 POSEGUIDE AI - NEW ARCHITECTURE SETUP & RUN GUIDE
 
+### 1. Setup Clarifai API Key
+- Sign up at [Clarifai](https://www.clarifai.com/) and get a Personal Access Token (PAT).
+- Add it to your `local.properties`: `CLARIFAI_API_KEY="your_key_here"`
+- The `SceneAnalyzer` will use this for the primary waterfall step.
+
+### 2. Download Places365 TFLite Model
+- Download the TFLite MobileNetV2 Places365 model.
+- Place it in `android/app/src/main/assets/places365_mobilenet_v2.tflite`.
+- This serves as the offline fallback scene detector.
+
+### 3. Run Steps
+1. Open the project in Android Studio.
+2. Sync Gradle files to download CameraX, MediaPipe, and Retrofit dependencies.
+3. Build and Run on a physical Android device (emulators may not support CameraX live stream well).
+4. Grant Camera permissions on the first launch.
+
+### 4. How to Add New Pose Deltas
+1. Open `android/app/src/main/assets/poses_deltas.json`.
+2. Add a new JSON object to the array following the `PoseDelta` schema.
+3. **IMPORTANT**: Ensure you do not duplicate the combination of `(RIGHT_ARM.pitchDeg + RIGHT_KNEE.extendRatio)`.
+4. Provide up to 2 `instructionLines`, maximum 6 words each.
+5. The `GhostPoseGenerator` will automatically apply these forward kinematic deltas to the live skeleton.
+
+### 5. Unit Test Instructions
+To run tests on `PoseRotationManager` and Forward Kinematics:
+1. In Android Studio, right-click the `src/test/java/com/poseguide/ai/` directory.
+2. Select **Run 'Tests in ai'**.
+3. Verify that `PoseRotationManager` successfully avoids repeating the `lastPoseId` and handles `sceneFingerprint` scoped history correctly.

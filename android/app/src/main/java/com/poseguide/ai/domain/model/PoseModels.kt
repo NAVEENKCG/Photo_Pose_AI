@@ -10,7 +10,19 @@ data class LandmarkPoint(
     val y: Float,
     val z: Float,
     val inFrameLikelihood: Float
-)
+) {
+    fun toNormalizedLandmark() = NormalizedLandmark(x, y, z)
+}
+
+data class NormalizedLandmark(val x: Float, val y: Float, val z: Float) {
+    fun minus(other: NormalizedLandmark) = NormalizedLandmark(x - other.x, y - other.y, z - other.z)
+    fun plus(other: NormalizedLandmark) = NormalizedLandmark(x + other.x, y + other.y, z + other.z)
+    fun toCanvas(fw: Int, fh: Int) = android.graphics.PointF(x * fw, y * fh)
+    
+    companion object {
+        fun create(x: Float, y: Float, z: Float) = NormalizedLandmark(x, y, z)
+    }
+}
 
 /**
  * Subset of ML Kit's 33-landmark pose, keyed by [PoseLandmarkType].
@@ -48,70 +60,85 @@ enum class BodyCategory {
     OVERHEAD_REACH
 }
 
-// ─── Visual Variety Tags ───────────────────────────────────────────────────────
+// ─── Pose Delta System ─────────────────────────────────────────────────────────
 
-enum class VisualVariety {
-    SYMMETRICAL,
-    ASYMMETRICAL,
-    OPEN_STANCE,
-    CLOSED_STANCE,
-    FACING_CAMERA,
-    THREE_QUARTER,
-    PROFILE
-}
-
-// ─── Landmark Target ───────────────────────────────────────────────────────────
-
-data class LandmarkTarget(
-    val landmarkType: PoseLandmarkType,
-    val targetAngleDeg: Float?,        // null means position-based, not angle-based
-    val toleranceDeg: Float = 15f,
-    val description: String = ""
-)
-
-// ─── Pose Template ─────────────────────────────────────────────────────────────
-
-/**
- * A single pose entry from poses_library.json.
- *
- * Rule: no two poses in the library may share the same combination of
- * (bodyCategory + visualVariety[0]). This guarantees structural diversity.
- */
-data class PoseTemplate(
+data class PoseDelta(
     val id: String,
     val name: String,
-    val compatibleEnvironments: List<SceneEnvironment>,
-    val compatibleLighting: List<LightingContext>,
+    val compatibleScenes: List<String>,
     val bodyCategory: BodyCategory,
-    val overlayInstructions: List<String>,       // exactly 2 short strings (max 6 words each)
-    val landmarkAngles: Map<String, Float>,       // bodyPart → target angle (degrees)
-    val landmarkTargets: List<LandmarkTarget>,
-    val visualVariety: List<VisualVariety>,
-    val thumbnailResId: Int = 0
+    val jointDeltas: Map<JointGroup, AngleDelta>,
+    val instructionLines: List<String>
 )
+
+data class AngleDelta(
+    val pitchDeg: Float,    // forward/back rotation
+    val yawDeg: Float,      // left/right rotation
+    val rollDeg: Float,     // tilt
+    val extendRatio: Float  // 0.0=fully bent, 1.0=fully extended
+)
+
+enum class JointGroup {
+    RIGHT_ARM, LEFT_ARM,
+    RIGHT_ELBOW, LEFT_ELBOW,
+    RIGHT_WRIST, LEFT_WRIST,
+    RIGHT_KNEE, LEFT_KNEE,
+    RIGHT_ANKLE, LEFT_ANKLE,
+    TORSO, HEAD, HIPS;
+
+    fun toLandmarkIndices(): Pair<Int, Int> {
+        return when (this) {
+            RIGHT_ARM -> Pair(12, 14) // right shoulder -> right elbow
+            LEFT_ARM -> Pair(11, 13)  // left shoulder -> left elbow
+            RIGHT_ELBOW -> Pair(14, 16) // right elbow -> right wrist
+            LEFT_ELBOW -> Pair(13, 15)  // left elbow -> left wrist
+            RIGHT_KNEE -> Pair(24, 26) // right hip -> right knee
+            LEFT_KNEE -> Pair(23, 25)  // left hip -> left knee
+            RIGHT_ANKLE -> Pair(26, 28) // right knee -> right ankle
+            LEFT_ANKLE -> Pair(25, 27)  // left knee -> left ankle
+            TORSO -> Pair(11, 23) // mid-shoulder -> mid-hip (simplified for indices)
+            HEAD -> Pair(11, 0) // mid-shoulder -> nose
+            HIPS -> Pair(23, 24)
+            else -> Pair(0, 0)
+        }
+    }
+}
 
 // ─── Body Proportions ──────────────────────────────────────────────────────────
 
-/**
- * Measured from 15 frames at session start using MediaPipe Holistic.
- * Used to scale pose template landmarks to the actual user's body shape.
- */
 data class BodyProportions(
-    val shoulderWidthRatio: Float = 0f,   // shoulder landmarks / frame width
-    val torsoLengthRatio: Float = 0f,     // shoulder-to-hip distance / frame height
-    val legLengthRatio: Float = 0f        // hip-to-ankle / frame height
-)
+    val shoulderWidthNorm: Float,
+    val torsoLengthNorm: Float,
+    val leftArmLengthNorm: Float,
+    val rightArmLengthNorm: Float,
+    val leftLegLengthNorm: Float,
+    val rightLegLengthNorm: Float,
+    val headSizeNorm: Float,
+    val frameWidth: Int,
+    val frameHeight: Int
+) {
+    fun getLimbLength(jointGroup: JointGroup): Float {
+        return when (jointGroup) {
+            JointGroup.RIGHT_ARM -> rightArmLengthNorm * 0.5f
+            JointGroup.LEFT_ARM -> leftArmLengthNorm * 0.5f
+            JointGroup.RIGHT_ELBOW -> rightArmLengthNorm * 0.5f
+            JointGroup.LEFT_ELBOW -> leftArmLengthNorm * 0.5f
+            JointGroup.RIGHT_KNEE -> rightLegLengthNorm * 0.5f
+            JointGroup.LEFT_KNEE -> leftLegLengthNorm * 0.5f
+            JointGroup.RIGHT_ANKLE -> rightLegLengthNorm * 0.5f
+            JointGroup.LEFT_ANKLE -> leftLegLengthNorm * 0.5f
+            JointGroup.TORSO -> torsoLengthNorm
+            JointGroup.HEAD -> headSizeNorm
+            else -> 0.1f
+        }
+    }
+}
 
 // ─── Match Confidence ──────────────────────────────────────────────────────────
 
-/**
- * Result of matching the user's current body position against a [PoseTemplate].
- * [score] is in 0..1. [partialFeedback] maps landmark → instruction hint.
- */
 data class PoseMatchResult(
     val poseId: String,
     val score: Float,
-    val partialFeedback: Map<PoseLandmarkType, String> = emptyMap(),
     val isReadyToShoot: Boolean = score >= READY_THRESHOLD
 ) {
     companion object {

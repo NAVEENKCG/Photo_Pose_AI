@@ -1,0 +1,56 @@
+[
+  {
+    "id": "grad_leg_raise_arm_up",
+    "name": "Celebration kick",
+    "compatibleScenes": ["OUTDOOR_LANDMARK", "URBAN", "PARK"],
+    "bodyCategory": "STANDING_DYNAMIC",
+    "jointDeltas": {
+      "RIGHT_ARM": { "pitchDeg": -140, "yawDeg": 20, "rollDeg": 0, "extendRatio": 0.9 },
+      "RIGHT_ELBOW": { "pitchDeg": -20, "yawDeg": 0, "rollDeg": 0, "extendRatio": 0.85 },
+      "LEFT_ARM": { "pitchDeg": -30, "yawDeg": -10, "rollDeg": 0, "extendRatio": 0.7 },
+      "RIGHT_KNEE": { "pitchDeg": 80, "yawDeg": 10, "rollDeg": 0, "extendRatio": 0.0 },
+      "TORSO": { "pitchDeg": 0, "yawDeg": 15, "rollDeg": 5, "extendRatio": 1.0 },
+      "HEAD": { "pitchDeg": -5, "yawDeg": 10, "rollDeg": 0, "extendRatio": 1.0 }
+    },
+    "instructionLines": ["Raise right arm up high", "Lift right knee forward"]
+  },
+  {
+    "id": "casual_lean_wall",
+    "name": "Casual Lean",
+    "compatibleScenes": ["URBAN", "INDOOR", "ALLEY"],
+    "bodyCategory": "LEANING",
+    "jointDeltas": {
+      "LEFT_ARM": { "pitchDeg": -80, "yawDeg": -30, "rollDeg": 0, "extendRatio": 0.3 },
+      "RIGHT_ARM": { "pitchDeg": -10, "yawDeg": 10, "rollDeg": 0, "extendRatio": 0.9 },
+      "LEFT_KNEE": { "pitchDeg": 45, "yawDeg": -20, "rollDeg": 0, "extendRatio": 0.4 },
+      "TORSO": { "pitchDeg": -10, "yawDeg": -20, "rollDeg": -15, "extendRatio": 1.0 }
+    },
+    "instructionLines": ["Lean left shoulder back", "Bend left knee slightly"]
+  },
+  {
+    "id": "power_stance_hands_hips",
+    "name": "Power Stance",
+    "compatibleScenes": ["BUSINESS", "STUDIO", "OUTDOOR_LANDMARK"],
+    "bodyCategory": "STANDING_RELAXED",
+    "jointDeltas": {
+      "LEFT_ARM": { "pitchDeg": -45, "yawDeg": -45, "rollDeg": 0, "extendRatio": 0.5 },
+      "RIGHT_ARM": { "pitchDeg": -45, "yawDeg": 45, "rollDeg": 0, "extendRatio": 0.5 },
+      "TORSO": { "pitchDeg": 5, "yawDeg": 0, "rollDeg": 0, "extendRatio": 1.0 },
+      "HEAD": { "pitchDeg": 5, "yawDeg": 0, "rollDeg": 0, "extendRatio": 1.0 }
+    },
+    "instructionLines": ["Hands on hips", "Chest out, head high"]
+  },
+  {
+    "id": "walking_look_back",
+    "name": "Over the Shoulder",
+    "compatibleScenes": ["PARK", "BEACH", "STREET"],
+    "bodyCategory": "WALKING_PAUSED",
+    "jointDeltas": {
+      "TORSO": { "pitchDeg": 0, "yawDeg": 70, "rollDeg": 0, "extendRatio": 1.0 },
+      "HEAD": { "pitchDeg": 0, "yawDeg": 100, "rollDeg": 0, "extendRatio": 1.0 },
+      "LEFT_KNEE": { "pitchDeg": -20, "yawDeg": 0, "rollDeg": 0, "extendRatio": 0.8 },
+      "RIGHT_ARM": { "pitchDeg": -20, "yawDeg": 30, "rollDeg": 0, "extendRatio": 0.7 }
+    },
+    "instructionLines": ["Turn torso right", "Look back over shoulder"]
+  }
+]
