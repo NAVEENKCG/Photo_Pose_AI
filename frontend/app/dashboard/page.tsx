@@ -128,24 +128,30 @@ function DashboardContent() {
       <Navbar onLogout={logout} />
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <motion.div
-          variants={staggerContainer}
-          initial="initial"
-          animate="animate"
-          className="mb-12"
-        >
-          <motion.p variants={fadeInUp} transition={EASE_OUT_EXPO} className="tag tag-blue mb-4">
+        <motion.div className="mb-12">
+          <motion.p
+            initial={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ ...EASE_OUT_EXPO, delay: 0.1 }}
+            className="tag tag-blue mb-4"
+          >
             Dashboard
           </motion.p>
           <motion.h1
-            variants={fadeInUp}
-            transition={EASE_OUT_EXPO}
+            initial={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ ...EASE_OUT_EXPO, delay: 0.2 }}
             className="text-5xl font-black mb-3 font-syne tracking-tight"
           >
             Welcome back,{' '}
             <span className="gradient-text">{user.firstName}</span>!
           </motion.h1>
-          <motion.p variants={fadeInUp} transition={EASE_OUT_EXPO} className="text-muted text-lg">
+          <motion.p
+            initial={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ ...EASE_OUT_EXPO, delay: 0.3 }}
+            className="text-muted text-lg"
+          >
             Ready to capture your perfect pose today?
           </motion.p>
         </motion.div>

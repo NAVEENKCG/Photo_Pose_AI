@@ -45,7 +45,7 @@ function HomeContent() {
   ];
 
   // Fallback entrance for all elements based on user accessibility rules
-  const entranceState = { opacity: 0, y: 40 };
+  const entranceState = { opacity: 1, y: 0 };
   const visibleState = { opacity: 1, y: 0 };
 
   return (
