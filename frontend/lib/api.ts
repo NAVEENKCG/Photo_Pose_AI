@@ -1,7 +1,13 @@
 // lib/api.ts - Centralized API client with JWT handling
 import axios, { AxiosInstance, InternalAxiosRequestConfig } from 'axios';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+let API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+
+if (typeof window !== 'undefined') {
+  if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+    API_BASE = `${window.location.protocol}//${window.location.hostname}:4000`;
+  }
+}
 
 const api: AxiosInstance = axios.create({
   baseURL: `${API_BASE}/api`,
