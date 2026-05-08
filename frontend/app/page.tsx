@@ -6,7 +6,7 @@ import { AuthProvider, useAuth } from '@/lib/auth';
 import Link from 'next/link';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Camera, Zap, ShieldCheck, TrendingUp, ArrowRight, Sparkles } from 'lucide-react';
-import { fadeInUp, staggerContainer, EASE_OUT_EXPO, getSafeVariants } from '@/lib/animations';
+import { EASE_OUT_EXPO } from '@/lib/animations';
 
 function HomeContent() {
   const { user, loading } = useAuth();
@@ -47,8 +47,8 @@ function HomeContent() {
     },
   ];
 
-  // Prevent SSR hydration mismatch where framer-motion gets stuck on opacity 0
   if (!mounted) {
+    // Return visible skeleton matching the layout instead of a blank screen
     return (
       <main className="min-h-screen flex items-center justify-center">
         <div className="skeleton w-32 h-8" />
@@ -56,8 +56,12 @@ function HomeContent() {
     );
   }
 
+  // Fallback entrance for all elements based on user accessibility rules
+  const entranceState = shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 };
+  const visibleState = { opacity: 1, y: 0 };
+
   return (
-    <main className="min-h-screen flex flex-col">
+    <main className="min-h-screen flex flex-col relative z-0">
       {/* ── Skip to content ─────────────────────────────────────── */}
       <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-blue-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg">
         Skip to content
@@ -68,7 +72,8 @@ function HomeContent() {
         <motion.div
           className="glass-card pointer-events-auto flex items-center gap-8 px-6 py-3 max-w-2xl w-full mx-4"
           initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={EASE_OUT_EXPO}
         >
           <div className="flex items-center gap-2 flex-1">
@@ -86,72 +91,75 @@ function HomeContent() {
 
       {/* ── Hero ────────────────────────────────────────────────── */}
       <section id="main-content" className="min-h-screen flex items-center justify-center px-6 pt-24">
-        <div className="max-w-6xl mx-auto text-center">
+        <div className="max-w-6xl mx-auto text-center flex flex-col items-center gap-6">
           <motion.div
-            variants={getSafeVariants(shouldReduceMotion, staggerContainer)}
-            initial="initial"
-            animate="animate"
-            className="flex flex-col items-center gap-6"
+            initial={entranceState}
+            whileInView={visibleState}
+            viewport={{ once: true }}
+            transition={{ ...EASE_OUT_EXPO, delay: 0.1 }}
           >
-            <motion.div variants={getSafeVariants(shouldReduceMotion, fadeInUp)} transition={EASE_OUT_EXPO}>
-              <span className="tag tag-blue">
-                <Sparkles size={10} className="mr-1" /> AI-Powered Photography
-              </span>
-            </motion.div>
+            <span className="tag tag-blue">
+              <Sparkles size={10} className="mr-1" /> AI-Powered Photography
+            </span>
+          </motion.div>
 
-            <motion.h1
-              variants={getSafeVariants(shouldReduceMotion, fadeInUp)}
-              transition={EASE_OUT_EXPO}
-              className="text-6xl md:text-8xl font-black leading-none tracking-tight"
-              style={{ fontFamily: 'Syne, sans-serif', letterSpacing: '-0.04em' }}
-            >
-              Your Perfect{' '}
-              <span className="gradient-text">Pose</span>
-              <br />
-              Every Shot
-            </motion.h1>
+          <motion.h1
+            initial={entranceState}
+            whileInView={visibleState}
+            viewport={{ once: true }}
+            transition={{ ...EASE_OUT_EXPO, delay: 0.2 }}
+            className="text-6xl md:text-8xl font-black leading-none tracking-tight"
+            style={{ fontFamily: 'Syne, sans-serif', letterSpacing: '-0.04em' }}
+          >
+            Your Perfect <span className="gradient-text">Pose</span><br />Every Shot
+          </motion.h1>
 
-            <motion.p
-              variants={getSafeVariants(shouldReduceMotion, fadeInUp)}
-              transition={EASE_OUT_EXPO}
-              className="text-lg md:text-xl text-muted max-w-2xl leading-relaxed"
-            >
-              AI Pose Aid uses MediaPipe ML to analyze your body posture in real time,
-              giving instant recommendations so every photo looks professional.
-            </motion.p>
+          <motion.p
+            initial={entranceState}
+            whileInView={visibleState}
+            viewport={{ once: true }}
+            transition={{ ...EASE_OUT_EXPO, delay: 0.3 }}
+            className="text-lg md:text-xl text-muted max-w-2xl leading-relaxed"
+          >
+            AI Pose Aid uses MediaPipe ML to analyze your body posture in real time,
+            giving instant recommendations so every photo looks professional.
+          </motion.p>
 
-            <motion.div
-              variants={getSafeVariants(shouldReduceMotion, fadeInUp)}
-              transition={EASE_OUT_EXPO}
-              className="flex flex-col sm:flex-row items-center gap-4 mt-2"
-            >
-              <Link href="/register" className="btn-primary gap-2 group text-base px-6 py-3">
-                Start for Free
-                <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
-              </Link>
-              <Link href="/login" className="btn-ghost text-base px-6 py-3">
-                Sign In
-              </Link>
-            </motion.div>
+          <motion.div
+            initial={entranceState}
+            whileInView={visibleState}
+            viewport={{ once: true }}
+            transition={{ ...EASE_OUT_EXPO, delay: 0.4 }}
+            className="flex flex-col sm:flex-row items-center gap-4 mt-2"
+          >
+            <Link href="/register" className="btn-primary gap-2 group text-base px-6 py-3">
+              Start for Free
+              <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+            </Link>
+            <Link href="/login" className="btn-ghost text-base px-6 py-3">
+              Sign In
+            </Link>
+          </motion.div>
 
-            {/* Trust indicators */}
-            <motion.div
-              variants={getSafeVariants(shouldReduceMotion, fadeInUp)}
-              transition={EASE_OUT_EXPO}
-              className="flex items-center gap-6 mt-4 opacity-60"
-            >
-              <div className="flex -space-x-2">
-                {['#3B82F6','#8B5CF6','#EC4899','#10B981'].map((c, i) => (
-                  <div key={i} className="w-8 h-8 rounded-full border-2 border-[#050A18]" style={{ background: c }} />
-                ))}
-              </div>
-              <p className="text-sm text-muted">2,400+ poses analyzed</p>
-              <div className="flex gap-0.5">
-                {[1,2,3,4,5].map(i => (
-                  <span key={i} className="text-amber-400 text-sm">★</span>
-                ))}
-              </div>
-            </motion.div>
+          {/* Trust indicators */}
+          <motion.div
+            initial={entranceState}
+            whileInView={visibleState}
+            viewport={{ once: true }}
+            transition={{ ...EASE_OUT_EXPO, delay: 0.5 }}
+            className="flex items-center gap-6 mt-4 opacity-60"
+          >
+            <div className="flex -space-x-2">
+              {['#3B82F6','#8B5CF6','#EC4899','#10B981'].map((c, i) => (
+                <div key={i} className="w-8 h-8 rounded-full border-2 border-[#050A18]" style={{ background: c }} />
+              ))}
+            </div>
+            <p className="text-sm text-muted">2,400+ poses analyzed</p>
+            <div className="flex gap-0.5">
+              {[1,2,3,4,5].map(i => (
+                <span key={i} className="text-amber-400 text-sm">★</span>
+              ))}
+            </div>
           </motion.div>
         </div>
       </section>
@@ -160,8 +168,8 @@ function HomeContent() {
       <section className="py-32 px-6" aria-label="Features">
         <div className="max-w-6xl mx-auto">
           <motion.div
-            initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={entranceState}
+            whileInView={visibleState}
             viewport={{ once: true, margin: '-100px' }}
             transition={EASE_OUT_EXPO}
             className="text-center mb-16"
@@ -177,10 +185,10 @@ function HomeContent() {
               <motion.div
                 key={feat.title}
                 className="glass-card interactive p-8"
-                initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={entranceState}
+                whileInView={visibleState}
                 viewport={{ once: true, margin: '-100px' }}
-                transition={{ ...EASE_OUT_EXPO, delay: i * 0.08 }}
+                transition={{ ...EASE_OUT_EXPO, delay: i * 0.1 }}
                 whileHover={shouldReduceMotion ? {} : { y: -8 }}
                 whileTap={shouldReduceMotion ? {} : { scale: 0.96 }}
                 onMouseMove={(e) => {
@@ -204,8 +212,8 @@ function HomeContent() {
       <section className="py-32 px-6">
         <motion.div
           className="max-w-4xl mx-auto glass-card p-16 text-center"
-          initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={entranceState}
+          whileInView={visibleState}
           viewport={{ once: true, margin: '-100px' }}
           transition={EASE_OUT_EXPO}
         >
@@ -223,7 +231,7 @@ function HomeContent() {
       </section>
 
       {/* ── Footer ──────────────────────────────────────────────── */}
-      <footer className="py-8 px-6 border-t border-white/[0.06]">
+      <footer className="py-8 px-6 border-t border-white/[0.06] relative z-10">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 rounded-md bg-blue-500 flex items-center justify-center">
