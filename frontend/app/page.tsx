@@ -94,8 +94,7 @@ function HomeContent() {
         <div className="max-w-6xl mx-auto text-center flex flex-col items-center gap-6">
           <motion.div
             initial={entranceState}
-            whileInView={visibleState}
-            viewport={{ once: true }}
+            animate={visibleState}
             transition={{ ...EASE_OUT_EXPO, delay: 0.1 }}
           >
             <span className="tag tag-blue">
@@ -105,8 +104,7 @@ function HomeContent() {
 
           <motion.h1
             initial={entranceState}
-            whileInView={visibleState}
-            viewport={{ once: true }}
+            animate={visibleState}
             transition={{ ...EASE_OUT_EXPO, delay: 0.2 }}
             className="text-6xl md:text-8xl font-black leading-none tracking-tight"
             style={{ fontFamily: 'Syne, sans-serif', letterSpacing: '-0.04em' }}
@@ -116,8 +114,7 @@ function HomeContent() {
 
           <motion.p
             initial={entranceState}
-            whileInView={visibleState}
-            viewport={{ once: true }}
+            animate={visibleState}
             transition={{ ...EASE_OUT_EXPO, delay: 0.3 }}
             className="text-lg md:text-xl text-muted max-w-2xl leading-relaxed"
           >
@@ -127,8 +124,7 @@ function HomeContent() {
 
           <motion.div
             initial={entranceState}
-            whileInView={visibleState}
-            viewport={{ once: true }}
+            animate={visibleState}
             transition={{ ...EASE_OUT_EXPO, delay: 0.4 }}
             className="flex flex-col sm:flex-row items-center gap-4 mt-2"
           >
@@ -144,8 +140,7 @@ function HomeContent() {
           {/* Trust indicators */}
           <motion.div
             initial={entranceState}
-            whileInView={visibleState}
-            viewport={{ once: true }}
+            animate={visibleState}
             transition={{ ...EASE_OUT_EXPO, delay: 0.5 }}
             className="flex items-center gap-6 mt-4 opacity-60"
           >
