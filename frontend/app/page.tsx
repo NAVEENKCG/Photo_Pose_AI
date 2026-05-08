@@ -1,16 +1,22 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AuthProvider, useAuth } from '@/lib/auth';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Camera, Zap, ShieldCheck, TrendingUp, ArrowRight, Sparkles } from 'lucide-react';
-import { fadeInUp, staggerContainer, EASE_OUT_EXPO } from '@/lib/animations';
+import { fadeInUp, staggerContainer, EASE_OUT_EXPO, getSafeVariants } from '@/lib/animations';
 
 function HomeContent() {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const shouldReduceMotion = useReducedMotion() ?? false;
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!loading && user) {
@@ -41,6 +47,15 @@ function HomeContent() {
     },
   ];
 
+  // Prevent SSR hydration mismatch where framer-motion gets stuck on opacity 0
+  if (!mounted) {
+    return (
+      <main className="min-h-screen flex items-center justify-center">
+        <div className="skeleton w-32 h-8" />
+      </main>
+    );
+  }
+
   return (
     <main className="min-h-screen flex flex-col">
       {/* ── Skip to content ─────────────────────────────────────── */}
@@ -52,7 +67,7 @@ function HomeContent() {
       <nav className="fixed top-4 left-0 right-0 z-40 flex justify-center pointer-events-none" role="navigation" aria-label="Main navigation">
         <motion.div
           className="glass-card pointer-events-auto flex items-center gap-8 px-6 py-3 max-w-2xl w-full mx-4"
-          initial={{ opacity: 0, y: -20 }}
+          initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={EASE_OUT_EXPO}
         >
@@ -73,19 +88,19 @@ function HomeContent() {
       <section id="main-content" className="min-h-screen flex items-center justify-center px-6 pt-24">
         <div className="max-w-6xl mx-auto text-center">
           <motion.div
-            variants={staggerContainer}
+            variants={getSafeVariants(shouldReduceMotion, staggerContainer)}
             initial="initial"
             animate="animate"
             className="flex flex-col items-center gap-6"
           >
-            <motion.div variants={fadeInUp} transition={EASE_OUT_EXPO}>
+            <motion.div variants={getSafeVariants(shouldReduceMotion, fadeInUp)} transition={EASE_OUT_EXPO}>
               <span className="tag tag-blue">
                 <Sparkles size={10} className="mr-1" /> AI-Powered Photography
               </span>
             </motion.div>
 
             <motion.h1
-              variants={fadeInUp}
+              variants={getSafeVariants(shouldReduceMotion, fadeInUp)}
               transition={EASE_OUT_EXPO}
               className="text-6xl md:text-8xl font-black leading-none tracking-tight"
               style={{ fontFamily: 'Syne, sans-serif', letterSpacing: '-0.04em' }}
@@ -97,7 +112,7 @@ function HomeContent() {
             </motion.h1>
 
             <motion.p
-              variants={fadeInUp}
+              variants={getSafeVariants(shouldReduceMotion, fadeInUp)}
               transition={EASE_OUT_EXPO}
               className="text-lg md:text-xl text-muted max-w-2xl leading-relaxed"
             >
@@ -106,7 +121,7 @@ function HomeContent() {
             </motion.p>
 
             <motion.div
-              variants={fadeInUp}
+              variants={getSafeVariants(shouldReduceMotion, fadeInUp)}
               transition={EASE_OUT_EXPO}
               className="flex flex-col sm:flex-row items-center gap-4 mt-2"
             >
@@ -121,7 +136,7 @@ function HomeContent() {
 
             {/* Trust indicators */}
             <motion.div
-              variants={fadeInUp}
+              variants={getSafeVariants(shouldReduceMotion, fadeInUp)}
               transition={EASE_OUT_EXPO}
               className="flex items-center gap-6 mt-4 opacity-60"
             >
@@ -145,7 +160,7 @@ function HomeContent() {
       <section className="py-32 px-6" aria-label="Features">
         <div className="max-w-6xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-100px' }}
             transition={EASE_OUT_EXPO}
@@ -162,12 +177,12 @@ function HomeContent() {
               <motion.div
                 key={feat.title}
                 className="glass-card interactive p-8"
-                initial={{ opacity: 0, y: 40 }}
+                initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-100px' }}
                 transition={{ ...EASE_OUT_EXPO, delay: i * 0.08 }}
-                whileHover={{ y: -8 }}
-                whileTap={{ scale: 0.96 }}
+                whileHover={shouldReduceMotion ? {} : { y: -8 }}
+                whileTap={shouldReduceMotion ? {} : { scale: 0.96 }}
                 onMouseMove={(e) => {
                   const rect = e.currentTarget.getBoundingClientRect();
                   e.currentTarget.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
@@ -189,7 +204,7 @@ function HomeContent() {
       <section className="py-32 px-6">
         <motion.div
           className="max-w-4xl mx-auto glass-card p-16 text-center"
-          initial={{ opacity: 0, y: 40 }}
+          initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={EASE_OUT_EXPO}

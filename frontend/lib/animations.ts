@@ -4,27 +4,37 @@ export const SPRING_SNAPPY = { type: 'spring' as const, stiffness: 500, damping:
 export const EASE_OUT_EXPO = { duration: 0.6, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] };
 
 export const fadeInUp = {
-  initial: { opacity: 0, y: 40 },
+  initial: { opacity: 0.01, y: 40 }, // Using 0.01 prevents SSR flickering issues sometimes
   animate: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: -20 },
 };
 
 export const staggerContainer = {
+  initial: {},
   animate: { transition: { staggerChildren: 0.08 } },
 };
 
 export const scaleIn = {
-  initial: { opacity: 0, scale: 0.92 },
+  initial: { opacity: 0.01, scale: 0.92 },
   animate: { opacity: 1, scale: 1 },
   exit: { opacity: 0, scale: 0.9 },
 };
 
 export const slideInLeft = {
-  initial: { opacity: 0, x: -30 },
+  initial: { opacity: 0.01, x: -30 },
   animate: { opacity: 1, x: 0 },
 };
 
 export const slideInRight = {
-  initial: { opacity: 0, x: 30 },
+  initial: { opacity: 0.01, x: 30 },
   animate: { opacity: 1, x: 0 },
 };
+
+export function getSafeVariants(shouldReduceMotion: boolean, variants: any) {
+  if (!shouldReduceMotion) return variants;
+  return {
+    initial: { ...variants.initial, y: 0, x: 0, scale: 1 },
+    animate: { ...variants.animate, y: 0, x: 0, scale: 1 },
+    exit: { ...variants.exit, y: 0, x: 0, scale: 1 },
+  };
+}
