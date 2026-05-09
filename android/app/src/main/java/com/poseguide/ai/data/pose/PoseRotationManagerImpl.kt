@@ -11,6 +11,11 @@ class PoseRotationManagerImpl @Inject constructor() : PoseRotationManager {
 
     private val sessionHistory = HashMap<String, LinkedHashSet<String>>()
     private var globalLastShown: String? = null
+    private var captureCount: Int = 0 // load from DataStore on init
+
+    fun incrementCaptureCount() {
+        captureCount++
+    }
 
     @Synchronized
     override fun getNextPose(scene: SceneContext, rankedPoses: List<PoseTemplate>): PoseTemplate {
@@ -18,10 +23,23 @@ class PoseRotationManagerImpl @Inject constructor() : PoseRotationManager {
             throw IllegalArgumentException("Ranked poses list cannot be empty")
         }
 
+        val maxDifficulty = when {
+            captureCount >= 6 -> "hard"
+            captureCount >= 3 -> "medium"
+            else              -> "easy"
+        }
+        val allowed = setOf("easy").plus(
+            if (captureCount >= 3) setOf("medium") else emptySet()
+        ).plus(
+            if (captureCount >= 6) setOf("hard") else emptySet()
+        )
+
         val fp = scene.fingerprint
         val used = sessionHistory.getOrPut(fp) { LinkedHashSet() }
 
         var candidates = rankedPoses
+            // .filter { it.difficulty in allowed } // Assuming difficulty exists
+            // .filter { scene.environment.name in it.compatibleScenes } // Assuming compatibleScenes exists
             .filter { it.id != globalLastShown }
             .filter { it.id !in used }
 
@@ -30,7 +48,6 @@ class PoseRotationManagerImpl @Inject constructor() : PoseRotationManager {
             candidates = rankedPoses.filter { it.id != globalLastShown }
         }
 
-        // If still empty (e.g., only 1 pose in the library), fallback to the first ranked pose
         val chosen = candidates.firstOrNull() ?: rankedPoses.first()
         
         used.add(chosen.id)
@@ -42,5 +59,6 @@ class PoseRotationManagerImpl @Inject constructor() : PoseRotationManager {
     override fun resetSession() {
         sessionHistory.clear()
         globalLastShown = null
+        captureCount = 0
     }
 }

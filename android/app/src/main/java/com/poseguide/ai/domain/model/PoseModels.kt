@@ -11,16 +11,18 @@ data class LandmarkPoint(
     val z: Float,
     val inFrameLikelihood: Float
 ) {
-    fun toNormalizedLandmark() = NormalizedLandmark(x, y, z)
+    fun toNormalizedLandmark() = NormalizedLandmark(x, y, z, inFrameLikelihood)
 }
 
-data class NormalizedLandmark(val x: Float, val y: Float, val z: Float) {
-    fun minus(other: NormalizedLandmark) = NormalizedLandmark(x - other.x, y - other.y, z - other.z)
-    fun plus(other: NormalizedLandmark) = NormalizedLandmark(x + other.x, y + other.y, z + other.z)
+data class NormalizedLandmark(val x: Float, val y: Float, val z: Float, val visibility: Float = 1.0f) {
+    fun minus(other: NormalizedLandmark) = NormalizedLandmark(x - other.x, y - other.y, z - other.z, visibility)
+    fun plus(other: NormalizedLandmark) = NormalizedLandmark(x + other.x, y + other.y, z + other.z, visibility)
     fun toCanvas(fw: Int, fh: Int) = android.graphics.PointF(x * fw, y * fh)
     
+    fun visibility() = visibility
+
     companion object {
-        fun create(x: Float, y: Float, z: Float) = NormalizedLandmark(x, y, z)
+        fun create(x: Float, y: Float, z: Float, visibility: Float = 1.0f) = NormalizedLandmark(x, y, z, visibility)
     }
 }
 
@@ -65,6 +67,7 @@ enum class BodyCategory {
 data class PoseDelta(
     val id: String,
     val name: String,
+    val difficulty: String = "easy",
     val compatibleScenes: List<String>,
     val bodyCategory: BodyCategory,
     val jointDeltas: Map<JointGroup, AngleDelta>,

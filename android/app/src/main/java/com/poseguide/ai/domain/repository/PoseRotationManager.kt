@@ -24,4 +24,7 @@ interface PoseRotationManager {
 
     /** Clears all per-fingerprint history and resets the global consecutive guard. */
     fun resetSession()
+
+    /** Increments the capture count for difficulty progression. */
+    fun incrementCaptureCount()
 }

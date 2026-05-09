@@ -27,28 +27,20 @@ class Places365Classifier @Inject constructor(
         private const val LABELS_FILE = "places365_labels.txt" // we will map these internally
     }
 
-    private var interpreter: Interpreter? = null
     private var labels: List<String> = emptyList()
-
+    
     private val imageProcessor = ImageProcessor.Builder()
         .add(ResizeOp(224, 224, ResizeOp.ResizeMethod.BILINEAR))
         .build()
 
-    init {
-        try {
-            val modelBuffer: MappedByteBuffer = FileUtil.loadMappedFile(context, MODEL_FILE)
-            val options = Interpreter.Options()
-            options.setNumThreads(2)
-            // Use NNAPI if available
-            options.setUseNNAPI(true)
-            interpreter = Interpreter(modelBuffer, options)
-            Log.d(TAG, "Interpreter initialized successfully")
-            
-            // Dummy labels or load from file. For Places365, we need to map the top output index to our SceneEnvironment.
-            // In a real implementation, you'd parse places365_labels.txt.
-        } catch (e: Exception) {
-            Log.e(TAG, "Error initializing TFLite interpreter", e)
-        }
+    private val interpreter: Interpreter by lazy {
+        val modelBuffer: MappedByteBuffer = FileUtil.loadMappedFile(context, MODEL_FILE)
+        val options = Interpreter.Options()
+        options.setNumThreads(2)
+        options.setUseNNAPI(true)
+        val interp = Interpreter(modelBuffer, options)
+        Log.d(TAG, "Interpreter initialized successfully")
+        interp
     }
 
     suspend fun analyze(bitmap: Bitmap): SceneEnvironment? = withContext(Dispatchers.Default) {

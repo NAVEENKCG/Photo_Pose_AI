@@ -8,9 +8,12 @@ import android.graphics.Path
 import android.graphics.PointF
 import android.view.View
 import com.poseguide.ai.domain.model.NormalizedLandmark
-import kotlin.math.hypot
+import com.poseguide.ai.data.pose.JointConfidence
+import android.graphics.DashPathEffect
 
 class GhostOverlayRenderer(context: Context) : View(context) {
+
+    var isFrontCamera: Boolean = false
 
     private val ghostPaint = Paint().apply {
         color = Color.WHITE
@@ -19,12 +22,6 @@ class GhostOverlayRenderer(context: Context) : View(context) {
         strokeCap = Paint.Cap.ROUND
         strokeJoin = Paint.Join.ROUND
         alpha = 210
-    }
-
-    private val ghostFillPaint = Paint().apply {
-        color = Color.WHITE
-        alpha = 18
-        style = Paint.Style.FILL
     }
 
     private val jointDotPaint = Paint().apply {
@@ -43,15 +40,20 @@ class GhostOverlayRenderer(context: Context) : View(context) {
     private var ghostLandmarks: List<NormalizedLandmark> = emptyList()
     private var realLandmarks: List<NormalizedLandmark> = emptyList()
     private var confidenceScore: Float = 0f
+    private var jointConfidence: JointConfidence? = null
+    
+    private val VISIBILITY_THRESHOLD = 0.5f
 
     fun updateOverlay(
         ghost: List<NormalizedLandmark>,
         real: List<NormalizedLandmark>,
-        confidence: Float
+        confidence: Float,
+        jointConf: JointConfidence? = null
     ) {
         this.ghostLandmarks = ghost
         this.realLandmarks = real
         this.confidenceScore = confidence
+        this.jointConfidence = jointConf
         invalidate()
     }
 
@@ -62,36 +64,72 @@ class GhostOverlayRenderer(context: Context) : View(context) {
         val fw = width
         val fh = height
 
-        // ML Kit Pose connections
+        if (isFrontCamera) {
+            canvas.save()
+            canvas.scale(-1f, 1f, fw / 2f, fh / 2f)
+        }
+
+        // ML Kit Pose connections (excluding the ones handled by chains)
+        val chainPairs = setOf(
+            Pair(11, 13), Pair(13, 15), Pair(12, 14), Pair(14, 16),
+            Pair(23, 25), Pair(25, 27), Pair(24, 26), Pair(26, 28),
+            Pair(0, 11), Pair(11, 23)
+        )
+        
         val connections = listOf(
             Pair(0, 1), Pair(1, 2), Pair(2, 3), Pair(3, 7), Pair(0, 4), Pair(4, 5), Pair(5, 6), Pair(6, 8),
-            Pair(9, 10), Pair(11, 12), Pair(11, 13), Pair(13, 15), Pair(15, 17), Pair(15, 19), Pair(15, 21),
-            Pair(17, 19), Pair(12, 14), Pair(14, 16), Pair(16, 18), Pair(16, 20), Pair(16, 22), Pair(18, 20),
-            Pair(11, 23), Pair(12, 24), Pair(23, 24), Pair(23, 25), Pair(24, 26), Pair(25, 27), Pair(26, 28),
-            Pair(27, 29), Pair(28, 30), Pair(29, 31), Pair(30, 32), Pair(27, 31), Pair(28, 32)
-        )
+            Pair(9, 10), Pair(11, 12), Pair(15, 17), Pair(15, 19), Pair(15, 21),
+            Pair(17, 19), Pair(16, 18), Pair(16, 20), Pair(16, 22), Pair(18, 20),
+            Pair(12, 24), Pair(23, 24), Pair(27, 29), Pair(28, 30), Pair(29, 31), Pair(30, 32), Pair(27, 31), Pair(28, 32)
+        ).filter { !chainPairs.contains(it) }
 
-        // Draw skeleton lines
+        // Draw bezier chains
+        val chains = listOf(
+            listOf(11, 13, 15), listOf(12, 14, 16),
+            listOf(23, 25, 27), listOf(24, 26, 28),
+            listOf(0, 11, 23)
+        )
+        
+        val jc = jointConfidence
+        for (chain in chains) {
+            if (chain.any { ghostLandmarks[it].visibility() < VISIBILITY_THRESHOLD }) continue
+            val pts = chain.map { ghostLandmarks[it].toCanvas(fw, fh) }
+            val path = smoothedPath(pts)
+            val avgConf = if (jc != null) chain.map { jc.perJoint[it] ?: 0f }.average().toFloat() else 0f
+            ghostPaint.color = jointColor(avgConf)
+            canvas.drawPath(path, ghostPaint)
+        }
+
+        // Draw remaining skeleton lines
         for ((start, end) in connections) {
-            val startPt = ghostLandmarks[start].toCanvas(fw, fh)
-            val endPt = ghostLandmarks[end].toCanvas(fw, fh)
+            val startLm = ghostLandmarks[start]
+            val endLm = ghostLandmarks[end]
+            if (startLm.visibility() < VISIBILITY_THRESHOLD || endLm.visibility() < VISIBILITY_THRESHOLD) continue
+            
+            val avgConf = if (jc != null) ((jc.perJoint[start] ?: 0f) + (jc.perJoint[end] ?: 0f)) / 2f else 0f
+            ghostPaint.color = jointColor(avgConf)
+            
+            val startPt = startLm.toCanvas(fw, fh)
+            val endPt = endLm.toCanvas(fw, fh)
             canvas.drawLine(startPt.x, startPt.y, endPt.x, endPt.y, ghostPaint)
         }
 
         // Draw joint dots
-        for (lm in ghostLandmarks) {
+        for ((idx, lm) in ghostLandmarks.withIndex()) {
             val pt = lm.toCanvas(fw, fh)
-            canvas.drawCircle(pt.x, pt.y, 5f * context.resources.displayMetrics.density, jointDotPaint)
+            if (lm.visibility() < VISIBILITY_THRESHOLD) {
+                val dashPaint = Paint().apply {
+                    color = Color.WHITE; alpha = 80
+                    style = Paint.Style.STROKE; strokeWidth = 1.5f
+                    pathEffect = DashPathEffect(floatArrayOf(4f, 4f), 0f)
+                }
+                canvas.drawCircle(pt.x, pt.y, 10f, dashPaint)
+                continue
+            }
+            val conf = jc?.perJoint?.get(idx) ?: 0f
+            jointDotPaint.color = jointColor(conf)
+            canvas.drawCircle(pt.x, pt.y, 7f, jointDotPaint)
         }
-
-        // Draw body contour
-        val contourPath = buildBodyContour(ghostLandmarks, fw, fh)
-        canvas.drawPath(contourPath, ghostFillPaint)
-        
-        val alphaOld = ghostPaint.alpha
-        ghostPaint.alpha = 90
-        canvas.drawPath(contourPath, ghostPaint)
-        ghostPaint.alpha = alphaOld
 
         // Draw confidence ring around the person if score > 30%
         if (confidenceScore > 0.3f && realLandmarks.isNotEmpty()) {
@@ -111,36 +149,34 @@ class GhostOverlayRenderer(context: Context) : View(context) {
                 -90f, sweepAngle, false, confidenceRingPaint
             )
         }
+        
+        if (isFrontCamera) {
+            canvas.restore()
+        }
     }
 
-    private fun buildBodyContour(landmarks: List<NormalizedLandmark>, fw: Int, fh: Int): Path {
+    private fun jointColor(confidence: Float): Int = when {
+        confidence >= 0.75f -> Color.parseColor("#1D9E75")  // teal = matched
+        confidence >= 0.45f -> Color.parseColor("#EF9F27")  // amber = close
+        else                -> Color.parseColor("#E24B4A")  // red = wrong
+    }
+
+    private fun smoothedPath(points: List<PointF>): Path {
         val path = Path()
-        val head = landmarks[0].toCanvas(fw, fh)
-        val lShoulder = landmarks[11].toCanvas(fw, fh)
-        val rShoulder = landmarks[12].toCanvas(fw, fh)
-        val lHip = landmarks[23].toCanvas(fw, fh)
-        val rHip = landmarks[24].toCanvas(fw, fh)
-
-        val shoulderMidX = (lShoulder.x + rShoulder.x) / 2f
-        val shoulderMidY = (lShoulder.y + rShoulder.y) / 2f
-        val headR = hypot(head.x - shoulderMidX, head.y - shoulderMidY) * 0.45f
-        
-        path.addCircle(head.x, head.y, headR, Path.Direction.CW)
-
-        path.moveTo(lShoulder.x, lShoulder.y)
-        path.cubicTo(
-            lShoulder.x - 15f * resources.displayMetrics.density, lShoulder.y + 20f * resources.displayMetrics.density,
-            lHip.x - 10f * resources.displayMetrics.density, lHip.y - 20f * resources.displayMetrics.density,
-            lHip.x, lHip.y
-        )
-        path.lineTo(rHip.x, rHip.y)
-        path.cubicTo(
-            rHip.x + 10f * resources.displayMetrics.density, rHip.y - 20f * resources.displayMetrics.density,
-            rShoulder.x + 15f * resources.displayMetrics.density, rShoulder.y + 20f * resources.displayMetrics.density,
-            rShoulder.x, rShoulder.y
-        )
-        path.close()
-
+        if (points.size < 2) return path
+        path.moveTo(points[0].x, points[0].y)
+        for (i in 0 until points.size - 1) {
+            val p0 = if (i > 0) points[i - 1] else points[i]
+            val p1 = points[i]
+            val p2 = points[i + 1]
+            val p3 = if (i + 2 < points.size) points[i + 2] else p2
+            val tension = 0.4f
+            val cp1x = p1.x + (p2.x - p0.x) * tension
+            val cp1y = p1.y + (p2.y - p0.y) * tension
+            val cp2x = p2.x - (p3.x - p1.x) * tension
+            val cp2y = p2.y - (p3.y - p1.y) * tension
+            path.cubicTo(cp1x, cp1y, cp2x, cp2y, p2.x, p2.y)
+        }
         return path
     }
 }

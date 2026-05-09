@@ -120,18 +120,18 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
 
-        <!-- RIGHT: Pose carousel -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/pose_carousel"
-            android:layout_width="0dp"
-            android:layout_height="68dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="16dp"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toEndOf="@id/btn_shutter"
+        <!-- RIGHT: Pose carousel replacement -->
+        <Button
+            android:id="@+id/btn_skip_pose"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="Skip pose"
+            android:textSize="12sp"
+            android:background="@drawable/bg_ghost_button"
+            android:paddingHorizontal="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintCenterVerticalOf="parent"
+            android:layout_marginEnd="16dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

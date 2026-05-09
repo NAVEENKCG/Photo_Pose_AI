@@ -2,6 +2,7 @@
   {
     "id": "grad_leg_raise_arm_up",
     "name": "Celebration kick",
+    "difficulty": "hard",
     "compatibleScenes": ["OUTDOOR_LANDMARK", "URBAN", "PARK"],
     "bodyCategory": "STANDING_DYNAMIC",
     "jointDeltas": {
@@ -17,6 +18,7 @@
   {
     "id": "casual_lean_wall",
     "name": "Casual Lean",
+    "difficulty": "medium",
     "compatibleScenes": ["URBAN", "INDOOR", "ALLEY"],
     "bodyCategory": "LEANING",
     "jointDeltas": {
@@ -30,6 +32,7 @@
   {
     "id": "power_stance_hands_hips",
     "name": "Power Stance",
+    "difficulty": "easy",
     "compatibleScenes": ["BUSINESS", "STUDIO", "OUTDOOR_LANDMARK"],
     "bodyCategory": "STANDING_RELAXED",
     "jointDeltas": {
@@ -43,6 +46,7 @@
   {
     "id": "walking_look_back",
     "name": "Over the Shoulder",
+    "difficulty": "medium",
     "compatibleScenes": ["PARK", "BEACH", "STREET"],
     "bodyCategory": "WALKING_PAUSED",
     "jointDeltas": {
