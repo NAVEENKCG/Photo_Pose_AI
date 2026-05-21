@@ -720,11 +720,40 @@ function CameraContent() {
       <AnimatePresence>
         {modelLoading && (
           <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}
-            className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-black/80"
+            className="fixed inset-0 z-50 flex flex-col bg-[#050A18]"
           >
-            <div className="w-12 h-12 rounded-full border-[3px] border-white/15 border-t-white/70 animate-spin" />
-            <p className="text-white/55 text-sm font-medium">Loading AI Pose System…</p>
-            <p className="text-white/25 text-xs">MediaPipe · Pose Landmarker Lite</p>
+            {/* Top Bar Skeleton */}
+            <div className="absolute top-6 left-4 right-4 flex justify-between items-center z-10 px-1">
+              <div className="w-12 h-12 rounded-full bg-white/[0.04] animate-pulse" />
+              <div className="w-32 h-10 rounded-full bg-white/[0.04] animate-pulse" />
+              <div className="w-12 h-12 rounded-full bg-white/[0.04] animate-pulse" />
+            </div>
+
+            {/* Viewport Skeleton Shimmer */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div className="w-3/4 max-w-sm aspect-[3/4] rounded-[32px] bg-white/[0.03] border border-white/[0.08] backdrop-blur-xl flex flex-col items-center justify-center gap-6 relative overflow-hidden">
+                 <div className="w-24 h-24 rounded-full bg-white/[0.05] animate-pulse flex items-center justify-center">
+                   <ScanSearch size={32} className="text-white/20" />
+                 </div>
+                 <div className="text-center space-y-4 w-full px-8 flex flex-col items-center">
+                   <div className="h-5 w-48 bg-white/[0.05] rounded-full animate-pulse" />
+                   <div className="h-3 w-32 bg-white/[0.03] rounded-full animate-pulse" />
+                 </div>
+              </div>
+            </div>
+
+            {/* Bottom HUD Skeleton */}
+            <div className="absolute bottom-6 left-4 right-4 bg-white/[0.03] border border-white/[0.08] backdrop-blur-xl rounded-[24px] p-5">
+              <div className="flex justify-between items-center mb-4 px-1">
+                <div className="h-3 w-28 bg-white/[0.05] rounded-full animate-pulse" />
+                <div className="h-3 w-20 bg-white/[0.05] rounded-full animate-pulse" />
+              </div>
+              <div className="flex gap-4 overflow-hidden">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="w-[68px] h-[80px] shrink-0 rounded-[14px] bg-white/[0.05] animate-pulse" />
+                ))}
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -823,7 +852,7 @@ function CameraContent() {
             <motion.div className="rounded-full bg-white flex items-center justify-center"
               style={{ width: 62, height: 62 }} animate={{ scale: capturing ? 0.76 : 1 }}
             >
-              {capturing && <div className="w-5 h-5 rounded-full border-[3px] border-black/20 border-t-black animate-spin" />}
+              {capturing && <div className="w-10 h-10 rounded-full bg-black/10 animate-pulse" />}
             </motion.div>
           </motion.button>
 
